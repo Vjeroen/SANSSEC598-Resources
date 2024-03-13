@@ -3,19 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "workflows_Webcast_AppRegistration_name": {
-            "defaultValue": "Webcast-AppRegistration",
+            "defaultValue": "SEC598-Secrets",
             "type": "String"
         },
         "connections_azuresentinel_Webcast_AppRegistration_externalid": {
-            "defaultValue": "/subscriptions/82669bf9-8b01-483c-a2b2-c5f4a0b209b9/resourceGroups/Webcast-Sentinel/providers/Microsoft.Web/connections/azuresentinel-Webcast-AppRegistration",
+            "defaultValue": "",
             "type": "String"
         },
         "connections_azuresentinel_1_externalid": {
-            "defaultValue": "/subscriptions/82669bf9-8b01-483c-a2b2-c5f4a0b209b9/resourceGroups/Webcast-Sentinel/providers/Microsoft.Web/connections/azuresentinel-1",
+            "defaultValue": "",
             "type": "String"
         },
         "connections_office365_externalid": {
-            "defaultValue": "/subscriptions/82669bf9-8b01-483c-a2b2-c5f4a0b209b9/resourceGroups/Webcast-Sentinel/providers/Microsoft.Web/connections/office365",
+            "defaultValue": "",
             "type": "String"
         }
     },
