@@ -15,6 +15,10 @@
             "type": "String"
         },
         "connections_office365_externalid": {
+            "defaultValue": "5",
+            "type": "String"
+        },
+        "location": {
             "defaultValue": "",
             "type": "String"
         }
@@ -23,9 +27,9 @@
     "resources": [
         {
             "type": "Microsoft.Logic/workflows",
-            "apiVersion": "2017-07-01",
+            "apiVersion": "2019-05-01",
             "name": "[parameters('workflows_Webcast_AppRegistration_name')]",
-            "location": "eastus",
+            "location": "[parameters('location')]",
             "identity": {
                 "type": "SystemAssigned"
             },
@@ -95,7 +99,7 @@
                                                         "Body": "<p>Application approval was rejected</p>",
                                                         "Importance": "Normal",
                                                         "Subject": "Application update - Rejected ",
-                                                        "To": "V_jeroen@yahoo.com"
+                                                        "To": "dummie@sec598.com"
                                                     },
                                                     "host": {
                                                         "connection": {
