@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "workflows_Webcast_AppRegistration_name": {
-            "defaultValue": "SEC598-Secrets",
+            "defaultValue": "SEC598-Secrets-LogicAPP",
             "type": "String"
         },
         "connections_azuresentinel_Webcast_AppRegistration_externalid": {
@@ -15,7 +15,7 @@
             "type": "String"
         },
         "connections_office365_externalid": {
-            "defaultValue": "5",
+            "defaultValue": "",
             "type": "String"
         },
         "location": {
