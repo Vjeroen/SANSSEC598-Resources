@@ -1,0 +1,227 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_Webcast_AppRegistration_name": {
+            "defaultValue": "SEC598-Secrets-LogicAPP",
+            "type": "String"
+        },
+        "connections_azuresentinel_Webcast_AppRegistration_externalid": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "connections_azuresentinel_1_externalid": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "connections_office365_externalid": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "location": {
+            "defaultValue": "",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2019-05-01",
+            "name": "[parameters('workflows_Webcast_AppRegistration_name')]",
+            "location": "[parameters('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Microsoft_Sentinel_incident": {
+                            "type": "ApiConnectionWebhook",
+                            "inputs": {
+                                "body": {
+                                    "callback_url": "@{listCallbackUrl()}"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
+                                    }
+                                },
+                                "path": "/incident-creation"
+                            }
+                        }
+                    },
+                    "actions": {
+                        "For_each": {
+                            "foreach": "@triggerBody()?['object']?['properties']?['Alerts']",
+                            "actions": {
+                                "Condition": {
+                                    "actions": {
+                                        "Add_comment_to_incident_(V3)": {
+                                            "runAfter": {},
+                                            "type": "ApiConnection",
+                                            "inputs": {
+                                                "body": {
+                                                    "incidentArmId": "@triggerBody()?['object']?['id']",
+                                                    "message": "<p>This request was approved by SecOps</p>"
+                                                },
+                                                "host": {
+                                                    "connection": {
+                                                        "name": "@parameters('$connections')['azuresentinel_1']['connectionId']"
+                                                    }
+                                                },
+                                                "method": "post",
+                                                "path": "/Incidents/Comment"
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Send_approval_email": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "else": {
+                                        "actions": {
+                                            "Send_an_email_(V2)": {
+                                                "runAfter": {},
+                                                "type": "ApiConnection",
+                                                "inputs": {
+                                                    "body": {
+                                                        "Body": "<p>Application approval was rejected</p>",
+                                                        "Importance": "Normal",
+                                                        "Subject": "Application update - Rejected ",
+                                                        "To": "dummie@sec598.com"
+                                                    },
+                                                    "host": {
+                                                        "connection": {
+                                                            "name": "@parameters('$connections')['office365']['connectionId']"
+                                                        }
+                                                    },
+                                                    "method": "post",
+                                                    "path": "/v2/Mail"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "equals": [
+                                                    "@body('Send_approval_email')?['SelectedOption']",
+                                                    "Approve"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "type": "If"
+                                },
+                                "Parse_JSON": {
+                                    "runAfter": {},
+                                    "type": "ParseJson",
+                                    "inputs": {
+                                        "content": "@items('For_each')?['properties']?['additionalData']?['Custom Details']",
+                                        "schema": {
+                                            "properties": {
+                                                "ActivityDisplayName": {
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": "array"
+                                                },
+                                                "ApplicationName": {
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": "array"
+                                                },
+                                                "Property": {
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": "array"
+                                                },
+                                                "TimeGenerated": {
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": "array"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "Send_approval_email": {
+                                    "runAfter": {
+                                        "Parse_JSON": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnectionWebhook",
+                                    "inputs": {
+                                        "body": {
+                                            "Message": {
+                                                "Body": "You received an approval request for @{body('Parse_JSON')?['ApplicationName']} on  @{body('Parse_JSON')?['TimeGenerated']}\n<br /> \nFull details of the Alert below: \n<br /> \n@{body('Parse_JSON')?['Property']}\n<br />",
+                                                "HideHTMLMessage": false,
+                                                "Importance": "Normal",
+                                                "Options": "Approve, Reject",
+                                                "ShowHTMLConfirmationDialog": false,
+                                                "Subject": "Approval Request",
+                                                "To": "dummie@sec598"
+                                            },
+                                            "NotificationUrl": "@{listCallbackUrl()}"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                            }
+                                        },
+                                        "path": "/approvalmail/$subscriptions"
+                                    }
+                                }
+                            },
+                            "runAfter": {},
+                            "type": "Foreach"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azuresentinel": {
+                                "connectionId": "[parameters('connections_azuresentinel_Webcast_AppRegistration_externalid')]",
+                                "connectionName": "[concat('azuresentinel-', parameters('workflows_Webcast_AppRegistration_name'))]",
+                                "connectionProperties": {
+                                    "authentication": {
+                                        "type": "ManagedServiceIdentity"
+                                    }
+                                },
+                                "id": "/subscriptions/82669bf9-8b01-483c-a2b2-c5f4a0b209b9/providers/Microsoft.Web/locations/eastus/managedApis/azuresentinel"
+                            },
+                            "azuresentinel_1": {
+                                "connectionId": "[parameters('connections_azuresentinel_1_externalid')]",
+                                "connectionName": "azuresentinel-1",
+                                "id": "/subscriptions/82669bf9-8b01-483c-a2b2-c5f4a0b209b9/providers/Microsoft.Web/locations/eastus/managedApis/azuresentinel"
+                            },
+                            "office365": {
+                                "connectionId": "[parameters('connections_office365_externalid')]",
+                                "connectionName": "office365",
+                                "id": "/subscriptions/82669bf9-8b01-483c-a2b2-c5f4a0b209b9/providers/Microsoft.Web/locations/eastus/managedApis/office365"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
