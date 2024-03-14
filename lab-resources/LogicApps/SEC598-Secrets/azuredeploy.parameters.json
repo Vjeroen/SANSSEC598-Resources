@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "workflows_SEC598_Secrets_name": {
+            "value": "SEC598-Secrets"
+        },
+        "workspaces_SEC598_Workspace_name": {
+            "value": "SEC598-Workspace"
+        },
+        "solutions_SecurityInsights_sec598_workspace_name": {
+            "value": "SecurityInsights(sec598-workspace)"
+        },
+        "connections_azuresentinel_SEC598_Secrets_externalid": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "connections_office365_externalid": {
+            "value": "" // TODO: Fill in parameter value
+        }
+    }
+}
