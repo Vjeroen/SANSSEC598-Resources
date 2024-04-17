@@ -1,0 +1,95 @@
+commonfields:
+  id: bbfd5b91-80ff-48bb-80ab-d0902dc04456
+  version: 3
+vcShouldKeepItemLegacyProdMachine: false
+name: SEC598_AdversaryEmulation
+script: |-
+  from typing import Dict, Any
+  import traceback
+
+
+  def initialize_atomic():
+      try:
+          installed = execute_command(
+              "winrm-run-powershell", {'script': 'Test-Path C:/AtomicRedTeam'}
+          )
+          if isinstance(installed,list):
+              installed = installed[0]
+
+          # PowerShell object is returned with a new line at the end
+          if installed["output"].strip() == "True":
+              pass
+          else:
+              init = execute_command(
+                  "winrm-run-powershell", {'script' : '''Set-ExecutionPolicy Unrestricted -Force;
+                  Install-PackageProvider -Name NuGet -Force;
+                  New-Item -Path C:\ -Name Atomic -ItemType Directory;
+                  Invoke-WebRequest -UseBasicParsing -Uri https://raw.githubusercontent.com/redcanaryco/invoke-atomicredteam/master/install-atomicredteam.ps1 -OutFile "C:/Atomic/Install-AtomicRedTeam.ps1";
+                  '''}
+              )
+              installation = execute_command(
+                  "winrm-run-powershell", {'script': '''
+                  Import-Module C:/Atomic/Install-AtomicRedTeam.ps1; Install-AtomicRedTeam -getAtomics -Force;
+                  Install-AtomicRedTeam -getAtomics -Force'''}
+              )
+              if isinstance(installed,list):
+                  installed = installed[0]
+              if "Installation of Invoke-AtomicRedTeam is complete" in installation["output"]:
+                  pass
+              else:
+                  raise Error("Atomic was not properly installed on the system")
+      except Exception as ex:
+          return_error(f'Atomic Initialization failed. Error: {str(ex)}')
+
+  def run_remote_atomic(technique: str):
+      result = execute_command(
+      "winrm-run-powershell", {'script': '''Import-Module C:/AtomicRedTeam/Invoke-AtomicRedTeam/Invoke-AtomicRedTeam.psm1;
+      Invoke-AtomicTest -AtomicTechnique {} -NoExecutionLog'''.format(technique)}
+      )
+      return result
+
+  def execute_technique(args: Dict[str, Any]):
+      technique = args.get('Technique', '')
+
+      if not technique:
+          raise ValueError('Technique ID not specified')
+
+      initialize_atomic()
+      result = run_remote_atomic(technique)
+      return result
+      #return result["output"]
+
+      return CommandResults(
+          outputs_prefix='AdversaryEmulation',
+          outputs_key_field='',
+          outputs=result,
+      )
+
+  def main():
+      try:
+          return_results(execute_technique(demisto.args()))
+      except Exception as ex:
+          demisto.error(traceback.format_exc())  # print the traceback
+          return_error(f'Failed to execute Atomic. Error: {str(ex)}')
+
+
+  ''' ENTRY POINT '''
+  if __name__ in ('__main__', '__builtin__', 'builtins'):
+      main()
+type: python
+tags: []
+enabled: true
+args:
+- name: Technique
+  required: true
+scripttarget: 0
+subtype: python3
+dependson:
+  must:
+  - Windows Remote Management|||winrm-run-powershell
+pswd: ""
+runonce: false
+dockerimage: demisto/python3:3.10.14.92207
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}
