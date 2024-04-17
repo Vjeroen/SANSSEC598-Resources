@@ -1,0 +1,68 @@
+commonfields:
+  id: b7e523ff-ffb5-4fb9-8637-64319be4ad5d
+  version: 3
+vcShouldKeepItemLegacyProdMachine: false
+name: UpdateIncidentAdversaryEmulation
+script: |-
+  from typing import Dict, Any
+
+  import traceback
+
+  def updatemitreid(technique):
+
+      techniquelist = demisto.get(demisto.context(), 'sec598techniquesused')
+
+      # Table in the custom layout is populated by a list of JSON objects with the respective keys
+
+      techniqueformatted = techniqueformatted = {
+
+          'status': 'Finished',
+
+          'technique': technique['TechniqueID']
+
+      }
+
+      if techniquelist:
+
+          techniquelist.append(techniqueformatted)
+
+      else:
+
+          techniquelist = list()
+
+          techniquelist.append(techniqueformatted)
+
+      demisto.setContext("sec598techniquesused", techniquelist)
+
+      demisto.executeCommand("setIncident", {'sec598techniquesused': techniquelist})
+
+
+  def main():
+
+      try:
+
+          demisto.results(updatemitreid(demisto.args()))
+
+      except Exception as ex:
+
+          demisto.error(traceback.format_exc()) # print the traceback
+
+          return_error(f'Failed to execute BaseScript. Error: {str(ex)}')
+
+  if __name__ in ('main', 'builtin', 'builtins'):
+
+      main()
+type: python
+tags: []
+enabled: true
+args:
+- name: TechniqueID
+  required: true
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/python3:3.10.14.92207
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}

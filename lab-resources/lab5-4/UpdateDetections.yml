@@ -1,0 +1,106 @@
+commonfields:
+  id: 0ec9549e-3d7b-4d82-84e7-48154caf7557
+  version: 57
+vcShouldKeepItemLegacyProdMachine: false
+name: UpdateDetections
+script: |-
+  from typing import Dict, Any
+  import traceback
+  import json
+
+  def updatedetected():
+      usedtechniques = demisto.get(demisto.context(), 'sec598techniquesused')
+      timestamp = demisto.get(demisto.context(), "TimeNow")
+      detectedtechniques = []
+      #get the timestamp of incident created otherwise keep TimeNow
+      timestamp = demisto.get(demisto.incident(), 'created')
+      demistoproperties = demisto.executeCommand("SearchIncidentsV2", {"fromdate": timestamp, "raw-response":"true"})
+
+      if demistoproperties[0]['Type'] == 'Error':
+          raise Exception("Error fetching incidents: " + demistoproperties[0]['Contents'])
+
+
+      for incident in demistoproperties:
+          incidents_data = incident
+          DiscoveredEventid ="0"
+          incident_data = incident['Contents'][0]['Contents']
+          incident_list = incident_data['data']
+          #print(json.dumps(incident_list)) #Comment out for troubleshooting values of the incident
+          for incidentdetail in incident_list:
+              #Looping to the labelss parameter!
+              Eventid = incidentdetail['id']
+              if  incidentdetail['sourceBrand'] == "LimCharliev2.0" and DiscoveredEventid != Eventid :
+                  for label in incidentdetail.get('labels', []):
+
+                      if  label.get('type') == 'detect_mtd' and label['value']:
+                          detect_mtd_value = json.loads(label['value'])
+                          description_value = detect_mtd_value['description']
+                          tagsvalue = detect_mtd_value['tags']
+                          print(tagsvalue)
+                          pattern = r'\bt\d{4}\b'
+                          for s in tagsvalue:
+                              matches = re.findall(pattern, s)
+
+
+
+                          if  matches: #is coming from the EDR tooling and has this description value
+                              techniqueformatted = {}
+                              techniqueformatted['incidentid'] = Eventid
+                              techniqueformatted['description'] = description_value
+                              techniqueformatted['techniqueidentified'] = matches
+                              DiscoveredEventid = Eventid
+                              detectedtechniques.append(techniqueformatted)
+
+
+      displaydetections = []
+
+      for detection in detectedtechniques:
+          if isinstance(detection.get('techniqueidentified')[:4], list):
+              for technique in detection['techniqueidentified'][:4]:
+                  #print(json.dumps(technique)) #Comment out for troubleshooting values of the techniques detected
+                  displaydetection = {
+                      'techniqueidentified': technique,
+                      'description': detection['description'],
+                      'incidentid': detection['incidentid']
+                  }
+                  displaydetections.append(displaydetection)
+                  print(displaydetection) #comment out for troubleshooting
+          else:
+              displaydetections.append(detection)
+
+
+      overview = []
+
+      for used in usedtechniques:
+          overviewitem = {'techniqueid': used['technique'], 'numberofdetections': 0}
+          for detection in displaydetections:
+              if used['technique'][:4].lower()  == detection['techniqueidentified'][:4].lower():
+                  #count in case the technique part matches!
+                  overviewitem['numberofdetections'] += 1
+
+          overview.append(overviewitem)
+      print(overview) #comment out for troubleshooting
+      #print(displaydetections) #comment out for troubleshooti
+      demisto.executeCommand("setIncident", {"sec598techniquesoverview": overview})  #machine name of your overview table(incident field)
+      demisto.executeCommand("setIncident", {"sec598techniques": displaydetections}) #machine name of your overview table(incident field)
+
+  def main():
+      try:
+          return_results(updatedetected())
+      except Exception as ex:
+          demisto.error(traceback.format_exc())
+          return_error(f'Failed to execute BaseScript. Error: {str(ex)}')
+
+  if __name__ in ('__main__', 'builtin', 'builtins'):
+      main()
+type: python
+tags: []
+enabled: true
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/python3:3.10.14.92207
+runas: DBotWeakRole
+engineinfo: {}
+mainengineinfo: {}
