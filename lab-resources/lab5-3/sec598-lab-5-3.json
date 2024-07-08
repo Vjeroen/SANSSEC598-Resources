@@ -1,0 +1,495 @@
+{
+  "schema_version": 18,
+  "standard_lib_version": 54,
+  "action_runtime_version": 10,
+  "name": "SEC598 - Lab 5.3",
+  "description": "Receive new AWS GuardDuty findings, capture the details and run the domain through URLScan to check if it's malicious. Get the results via email and also add them to Jira. \n\ntags: AWS, GuardDuty, URLScan, Domain, Email, Jira, Intermediate\nicons: aws, urlscan, email\nvisibility: public",
+  "guid": "55c4ca52ce264f3a310e2735a794203e",
+  "slug": "sec598_lab_5_3",
+  "agents": [
+    {
+      "type": "Agents::WebhookAgent",
+      "name": "GuardDuty SNS Webhook",
+      "disabled": false,
+      "description": null,
+      "guid": "5a83f63414337e2140737d0a3fb75d64",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:d73af8f1ee9a3fc770fc1fb81b28b9bc",
+      "options": {
+        "secret": "34f016198719fa78f8d90f8002269ad7",
+        "path": "f70bb4ec52a3c2fb3658298245d314f4"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "GuardDuty Message JSON",
+      "disabled": false,
+      "description": null,
+      "guid": "bb7964fe52876a73b5b135dd557225e0",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:d73af8f1ee9a3fc770fc1fb81b28b9bc",
+      "options": {
+        "mode": "message_only",
+        "payload": {
+          "GuardDuty_Finding": "=guardduty_sns_webhook.body.Message"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Extract GuardDuty Findings URLs",
+      "disabled": false,
+      "description": null,
+      "guid": "3ac0a05553e1f4fa78dd93e55dc6e711",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:d73af8f1ee9a3fc770fc1fb81b28b9bc",
+      "options": {
+        "mode": "extract",
+        "matchers": [
+          {
+            "path": "=guardduty_message_json.GuardDuty_Finding",
+            "regexp": "[A-Za-z]+:\\/\\/[A-Za-z0-9\\-_]+\\.[A-Za-z0-9\\-_:%&;\\?\\#\\/.=]+",
+            "to": "findings_url"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "GET GuardDuty DetectorID",
+      "disabled": false,
+      "description": null,
+      "guid": "f01734971b07945cf2db5061b5f56879",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:d73af8f1ee9a3fc770fc1fb81b28b9bc",
+      "options": {
+        "url": "https://guardduty.<<DEFAULT(guardduty_message_json.guardduty_finding.region, RESOURCE.aws_region)>>.amazonaws.com/detector?maxResults=40&nextToken=null",
+        "method": "get",
+        "headers": {
+          "Authorization": "<<CREDENTIAL.sans_sec598_guardduty>>"
+        },
+        "payload": {}
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "GuardDuty Findings",
+      "disabled": false,
+      "description": null,
+      "guid": "0f144cd84bc23d8de02db08707d47948",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:d73af8f1ee9a3fc770fc1fb81b28b9bc",
+      "options": {
+        "url": "https://guardduty.<<DEFAULT(guardduty_message_json.guardduty_finding.region, RESOURCE.aws_region)>>.amazonaws.com/detector/<<individual_guardduty_detectorid.detectorID>>/findings",
+        "method": "post",
+        "headers": {
+          "Authorization": "<<CREDENTIAL.sans_sec598_guardduty>>"
+        },
+        "payload": {}
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Individual GuardDuty DetectorID",
+      "disabled": false,
+      "description": null,
+      "guid": "f759d6a91fc445a541325fd42f0dd889",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:d73af8f1ee9a3fc770fc1fb81b28b9bc",
+      "options": {
+        "mode": "explode",
+        "path": "=get_guardduty_detectorid.body.detectorIds",
+        "to": "detectorID"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Subscribe to SNS",
+      "disabled": false,
+      "description": null,
+      "guid": "e70492499a3defa563b16e5be99563fe",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:d73af8f1ee9a3fc770fc1fb81b28b9bc",
+      "options": {
+        "url": "<<guardduty_sns_webhook.body.SubscribeURL>>",
+        "method": "get"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "If Initial SNS Subscription",
+      "disabled": false,
+      "description": null,
+      "guid": "aa34b5d141bf5223dbe9366c3ffc4c93",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:d73af8f1ee9a3fc770fc1fb81b28b9bc",
+      "options": {
+        "rules": [
+          {
+            "type": "!regex",
+            "value": "^$",
+            "path": "<<guardduty_sns_webhook.body.SubscribeURL>>"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Individual GuardDuty FindingID",
+      "disabled": false,
+      "description": null,
+      "guid": "dc5ece9451eb50fd543305bab88f1775",
+      "origin_story_identifier": "cloud:ea61d850f6726aefb843382b0c716e54:55c4ca52ce264f3a310e2735a794203e",
+      "options": {
+        "mode": "explode",
+        "path": "=guardduty_findings.body.findingIds",
+        "to": "findingId",
+        "limit": "500"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Get findings in AWS GuardDuty",
+      "disabled": false,
+      "description": "Describes Amazon GuardDuty findings specified by finding IDs.",
+      "guid": "8eb3f5e57e5204b055a238b6e5022ecf",
+      "origin_story_identifier": "cloud:ea61d850f6726aefb843382b0c716e54:55c4ca52ce264f3a310e2735a794203e",
+      "options": {
+        "url": "https://guardduty.<<DEFAULT(guardduty_message_json.guardduty_finding.region, RESOURCE.aws_region)>>.amazonaws.com/detector/<<individual_guardduty_detectorid.detectorID>>/findings/get",
+        "content_type": "application_json",
+        "method": "post",
+        "payload": {
+          "findingIds": [
+            "<<individual_guardduty_findingid.findingId>>"
+          ]
+        },
+        "headers": {
+          "Authorization": "<<CREDENTIAL.sans_sec598_guardduty>>"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "028c339f900bd93515d1fcf57593fa07e979f956b65dca593b9d9b5c8d120dfc",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::CaseAgent",
+      "name": "Create Case",
+      "disabled": false,
+      "description": null,
+      "guid": "655c3f4f196bea9e853c9e9c675d4410",
+      "origin_story_identifier": "cloud:ea61d850f6726aefb843382b0c716e54:55c4ca52ce264f3a310e2735a794203e",
+      "options": {
+        "case_details": "{\"case_description\":\"# New GuardDuty Alert\\n\\n<<individual_finding_details.individual_finding_detail.description>>\\n\\n\\n# Context\\n\\nThe following user has disabled the CloudTrail:\\n\\n| IP Address        | ISP| Country | City |\\n| ------------- |:-------------:| -----:| -----:|\\n|  <<individual_finding_details.individual_finding_detail.service.action.awsApiCallAction.remoteIpDetails.ipAddressV4>>     | <<individual_finding_details.individual_finding_detail.service.action.awsApiCallAction.remoteIpDetails.organization.isp>> | <<individual_finding_details.individual_finding_detail.service.action.awsApiCallAction.remoteIpDetails.country.countryName>> | <<individual_finding_details.individual_finding_detail.service.action.awsApiCallAction.remoteIpDetails.city.cityName>> |\\n\\n\\n\",\"case_name\":\"GuardDuty Alert - <<individual_finding_details.individual_finding_detail.title>>\",\"record_ids\":\"<<>>\"}"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Individual Finding Details",
+      "disabled": false,
+      "description": null,
+      "guid": "c5b7c4ccd7df4a6de18db9db0d4f29e9",
+      "origin_story_identifier": "cloud:ea61d850f6726aefb843382b0c716e54:55c4ca52ce264f3a310e2735a794203e",
+      "options": {
+        "mode": "explode",
+        "path": "=get_findings_in_aws_guardduty.body.findings",
+        "to": "individual_finding_detail",
+        "limit": "500"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    }
+  ],
+  "diagram_notes": [
+    {
+      "content": "# Story Requirements\n\n## AWS Configuration\n- [ ] AWS GuardDuty Service created and set-up to send notifications to an **SNS Topic**\n\n## Tines Configuration\n- [ ] AWS Credential called `aws` created containing the AWS Key and AWS Secret Key\n- [ ] A resource called `aws_region` of your most used AWS region\n\n",
+      "position": [
+        -195,
+        180
+      ],
+      "guid": "6182fca771fb41a42e4b5b89b94911fa",
+      "width": 270
+    },
+    {
+      "content": "# AWS GuardDuty findings detail \n\nOnce the findings are captured the GuardDuty detectorID needs to passed to the `HTTP Request Action` to get all the findings for that detector.\n\nFinally, the finding ID is captured and used for the next request to capture the details of the finding.  \n\n**Note: You can iterate through this process by adding in a loop**",
+      "position": [
+        660,
+        390
+      ],
+      "guid": "deccda61eff7076b8a1efc1f09f70db4",
+      "width": 270
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "receiver": 7
+    },
+    {
+      "source": 1,
+      "receiver": 3
+    },
+    {
+      "source": 1,
+      "receiver": 2
+    },
+    {
+      "source": 2,
+      "receiver": 5
+    },
+    {
+      "source": 3,
+      "receiver": 5
+    },
+    {
+      "source": 4,
+      "receiver": 8
+    },
+    {
+      "source": 5,
+      "receiver": 4
+    },
+    {
+      "source": 7,
+      "receiver": 6
+    },
+    {
+      "source": 7,
+      "receiver": 1,
+      "secondary": true
+    },
+    {
+      "source": 8,
+      "receiver": 9
+    },
+    {
+      "source": 9,
+      "receiver": 11
+    },
+    {
+      "source": 11,
+      "receiver": 10
+    }
+  ],
+  "diagram_layout": "{\"5a83f63414337e2140737d0a3fb75d64\":[540,75],\"bb7964fe52876a73b5b135dd557225e0\":[330,240],\"3ac0a05553e1f4fa78dd93e55dc6e711\":[150,330],\"f01734971b07945cf2db5061b5f56879\":[405,330],\"0f144cd84bc23d8de02db08707d47948\":[405,510],\"f759d6a91fc445a541325fd42f0dd889\":[405,420],\"e70492499a3defa563b16e5be99563fe\":[705,255],\"aa34b5d141bf5223dbe9366c3ffc4c93\":[570,165],\"dc5ece9451eb50fd543305bab88f1775\":[405,585],\"8eb3f5e57e5204b055a238b6e5022ecf\":[405,675],\"655c3f4f196bea9e853c9e9c675d4410\":[405,870],\"c5b7c4ccd7df4a6de18db9db0d4f29e9\":[405,765]}",
+  "send_to_story_enabled": false,
+  "entry_agent_guid": null,
+  "exit_agent_guids": [],
+  "exit_agent_guid": null,
+  "api_entry_action_guids": [],
+  "api_exit_action_guids": [],
+  "keep_events_for": 604800,
+  "reporting_status": true,
+  "send_to_story_access": null,
+  "story_library_metadata": {
+    "tags": [
+      "AWS",
+      "GuardDuty"
+    ],
+    "icons": [
+      "aws",
+      "urlscan",
+      "email"
+    ],
+    "visibility": "public"
+  },
+  "parent_only_send_to_story": false,
+  "monitor_failures": false,
+  "send_to_stories": [],
+  "form": null,
+  "synchronous_webhooks_enabled": false,
+  "forms": [],
+  "pages": [],
+  "tags": [
+    {
+      "name": "AWS"
+    },
+    {
+      "name": "GuardDuty"
+    }
+  ],
+  "time_saved_unit": "minutes",
+  "time_saved_value": 0,
+  "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:d73af8f1ee9a3fc770fc1fb81b28b9bc",
+  "integration_product": null,
+  "integration_vendor": null,
+  "exported_at": "2024-07-02T13:04:25Z",
+  "icon": ":aws:",
+  "integrations": []
+}
