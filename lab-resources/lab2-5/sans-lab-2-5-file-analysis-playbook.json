@@ -1682,7 +1682,7 @@
           "ranking": 0,
           "max_characters": null,
           "default_value": "",
-          "content": "Documen Details:"
+          "content": "Document Details:"
         },
         {
           "name": "Heading",
