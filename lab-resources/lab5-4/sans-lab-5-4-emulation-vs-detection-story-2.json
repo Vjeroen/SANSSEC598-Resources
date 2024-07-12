@@ -1,0 +1,2014 @@
+{
+  "schema_version": 18,
+  "standard_lib_version": 54,
+  "action_runtime_version": 10,
+  "name": "SANS LAB 5.4 - Emulation vs Detection Story",
+  "description": null,
+  "guid": "2ee97b35f8f3a4cf0df1e37d32a4c978",
+  "slug": "sans_lab_5_4_emulation_vs_detection_story",
+  "agents": [
+    {
+      "type": "Agents::WebhookAgent",
+      "name": "Detections Webhook Action",
+      "disabled": false,
+      "description": null,
+      "guid": "2d7930cab79e14f4cea2ee524f5f2ba8",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "path": "41e4e2937f40c4891ce1161416f4ac6d",
+        "secret": "8a8c16b57d433017837a3c330c478b8d",
+        "verbs": "get,post"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Validate tags and host",
+      "disabled": false,
+      "description": null,
+      "guid": "1fde1512fba96cca194052b1f9342804",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "rules": [
+          {
+            "path": "=detections_webhook_action.body.routing.hostname",
+            "type": "in",
+            "value": "globexautomation.com"
+          },
+          {
+            "path": "=IS_EMPTY(detections_webhook_action.body.detect_mtd.tags)",
+            "type": "not formula"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::RecordAgent",
+      "name": "Capture Record",
+      "disabled": false,
+      "description": null,
+      "guid": "8c073770494f7f765d61ec9ac3db797d",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "parent": "",
+        "mode": "create"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "record_writers": [
+        {
+          "formula": "<<META.story.name>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7622,
+            "name": "Story name",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<DATE(\"now\", \"%Y-%m-%d %H:%M:%S\")>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7623,
+            "name": "Timestamp",
+            "result_type": "TIMESTAMP",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<detections_webhook_action.body.cat>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7624,
+            "name": "Detection Title",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<detections_webhook_action.body.detect_mtd.level>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7625,
+            "name": "Level",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<detections_webhook_action.body.detect_mtd.description>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7626,
+            "name": "Description Rule",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<detections_webhook_action.body.detect.event.COMMAND_LINE>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7627,
+            "name": "Command",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<detections_webhook_action.body.detect.routing.event_type>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7628,
+            "name": "Event Type",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<detections_webhook_action.body.detect.routing.int_ip>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7629,
+            "name": "Device IP",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<JSONPATH(detections_webhook_action.body.detect_mtd.tags,\"[0]\")>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7630,
+            "name": "MITRE Tactic",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<JSONPATH(detections_webhook_action.body.detect_mtd.tags,\"[1]\")>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7631,
+            "name": "MITRE Techniques",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<DATE_PARSE(detections_webhook_action.body.gen_time).iso8601_milliseconds>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7632,
+            "name": "Generate Time",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        },
+        {
+          "formula": "<<detections_webhook_action.body.detect.event.PARENT.USER_NAME>>",
+          "include_in_update": false,
+          "record_field": {
+            "id": 7633,
+            "name": "User",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        }
+      ],
+      "schedule": null,
+      "record_type": {
+        "id": 3709,
+        "name": "Detected Alerts",
+        "editable": true,
+        "record_fields": [
+          {
+            "id": 7622,
+            "name": "Story name",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7623,
+            "name": "Timestamp",
+            "result_type": "TIMESTAMP",
+            "fixed_values": []
+          },
+          {
+            "id": 7624,
+            "name": "Detection Title",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7625,
+            "name": "Level",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7626,
+            "name": "Description Rule",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7627,
+            "name": "Command",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7628,
+            "name": "Event Type",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7629,
+            "name": "Device IP",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7630,
+            "name": "MITRE Tactic",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7631,
+            "name": "MITRE Techniques",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7632,
+            "name": "Generate Time",
+            "result_type": "TEXT",
+            "fixed_values": []
+          },
+          {
+            "id": 7633,
+            "name": "User",
+            "result_type": "TEXT",
+            "fixed_values": []
+          }
+        ]
+      }
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "List records with a filter",
+      "disabled": false,
+      "description": "Retrieve a list of record results.\n\nLink to documentation: https://www.tines.com/api/records/list",
+      "guid": "620b8325648e0030961a21e7d4b4a9c2",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "url": "https://<<INPUT.tenant_domain>>/api/v1/records",
+        "method": "get",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.tines_credential>>"
+        },
+        "content_type": "application_json",
+        "payload": "=LOCAL.final_payload",
+        "local": {
+          "optional_parameters": {
+            "range_start": "=DATE(INPUT.range_start, \"%FT%TZ\")",
+            "range_end": "=DATE(INPUT.range_end, \"%FT%TZ\")",
+            "record_type_id": "=INPUT.record_type_id",
+            "record_field_ids": "=SPLIT(REMOVE(INPUT.record_field_ids, \" \"), \",\")",
+            "story_ids": "=SPLIT(REMOVE(INPUT.story_ids, \" \"), \",\")",
+            "order_direction": "=IF(INPUT.sort_direction_order[0] = \"Ascending\", \"ASC\", \"DESC\")",
+            "order_field_id": "=INPUT.order_field_id",
+            "per_page": "=INPUT.per_page",
+            "page": "=INPUT.page",
+            "filters": "=INPUT.filters",
+            "test_mode": "=INPUT.test_mode"
+          },
+          "final_payload": "=REJECT(\n  LOCAL.optional_parameters,\n  LAMBDA(\n    item,\n    OR(\n      item = NULL,\n      IF(\n        OR(\n          TYPE(item) = \"TrueClass\",\n          TYPE(item) = \"FalseClass\",\n          TYPE(item) = \"Integer\"\n        ),\n        IS_EMPTY(TEXT(item)),\n        IS_EMPTY(item)\n      )\n    )\n  )\n)"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "3a00b8407197b1d8cd6f5215601130bf528667fdaec0b882594346a579d51446",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Transform detections to table",
+      "disabled": false,
+      "description": null,
+      "guid": "8b8ca0547c7bd64cc3808b49cbf67198",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "automatic",
+        "input": "=merge_results.results_array",
+        "guidance": "Create a nice formatted table for Github with all different items in record results. Format the table so each event is another entry in a tabel with all the columns from the input. Also add an additional array to collect all the attack techniques with their value range from, strip the attack. pre- fix, so focus and only give output via  regex pattern for this range of values t0000-t9999 everything behind the point you can ignore for that value ",
+        "language": "Python",
+        "script": "import re\n\ndef main(input):\n    table = []\n    attack_techniques = []\n\n    for event in input:\n        row = {\n            \"Story name\": event.get(\"Story name\"),\n            \"Timestamp\": event.get(\"Timestamp\"),\n            \"Detection Title\": event.get(\"Detection Title\"),\n            \"Level\": event.get(\"Level\"),\n            \"Description Rule\": event.get(\"Description Rule\"),\n            \"Command\": event.get(\"Command\"),\n            \"Event Type\": event.get(\"Event Type\"),\n            \"Device IP\": event.get(\"Device IP\"),\n            \"MITRE Tactic\": event.get(\"MITRE Tactic\"),\n            \"MITRE Techniques\": event.get(\"MITRE Techniques\")\n        }\n        table.append(row)\n\n        techniques = event.get(\"MITRE Techniques\")\n        if techniques:\n            for technique in re.findall(r\"attack\\.t\\d{4}\", techniques):\n                attack_techniques.append(technique.replace(\"attack.\", \"\"))\n\n    return {\n        \"table\": table,\n        \"attack_techniques\": list(set(attack_techniques))\n    }"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::CaseAgent",
+      "name": "Create Adversary Emulation Case",
+      "disabled": false,
+      "description": null,
+      "guid": "8c169fa88a605807a1528b805dabe9bc",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "case_details": "{\"case_description\":\"\\n# Techniques executed\\n\\n<<transform_to_table.output>>\\n\\n\",\"case_name\":\"SEC598:Adversary Emulation:<<lab_5_4_adv_emulation_page.body.emulation_plan_name>>\"}"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Create Adversary Profile",
+      "disabled": false,
+      "description": null,
+      "guid": "b4be0814f00b9ea5a320ac4ab0d5f273",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "url": "http://<<RESOURCE.caldera_domain>>/api/v2/adversaries",
+        "method": "post",
+        "payload": {
+          "adversary_id": "Purple Team Run Profile APT28 -<<NOW()>> ",
+          "name": "Purple Team Run Profile APT28 - <<NOW()>>",
+          "description": "string",
+          "atomic_ordering": [
+            "<<event_transform_action.output[0]>>",
+            "<<event_transform_action.output[2]>>",
+            "<<event_transform_action.output[3]>>",
+            "<<event_transform_action.output[4]>>",
+            "<<event_transform_action.output[5]>>",
+            "<<event_transform_action.output[6]>>",
+            "<<event_transform_action.output[7]>>",
+            "<<event_transform_action.output[8]>>",
+            "<<event_transform_action.output[9]>>",
+            "<<event_transform_action.output[10]>>",
+            "<<event_transform_action.output[11]>>",
+            "<<event_transform_action.output[12]>>"
+          ],
+          "objective": "Purple teaming",
+          "tags": [
+            "sec598"
+          ],
+          "plugin": "aromic"
+        },
+        "headers": {
+          "KEY": "<<CREDENTIAL.caldera_api_key>>"
+        },
+        "content_type": "application_json"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "HTTP Request Action - Create Adversary Profile",
+      "disabled": false,
+      "description": null,
+      "guid": "5dcac4582866930f9d7a61076da06844",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "url": "http://<<RESOURCE.caldera_domain>>/api/v2/abilities",
+        "content_type": "application_json",
+        "method": "get",
+        "headers": {
+          "accept": "application/json",
+          "KEY": "<<CREDENTIAL.caldera_api_key>>"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Event Transform Action",
+      "disabled": false,
+      "description": null,
+      "guid": "13983880e121fb9ef59c4c1bb4b78470",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "automatic",
+        "input": "=http_request_action_create_adversary_profile.body",
+        "guidance": "The abilities that linked to APT-28 and are matching technique T1018, T1053, T1012, T1566.001, T1047 and T1003. Only add 2 abilities per technique ID.\n\nGet their ability id so and list all the technique IDs \nGenerate an array with the atomic ordering with the ability ids values\n\n",
+        "language": "Python",
+        "script": "def main(input):\n    technique_ids = set()\n    ability_ids = []\n    for ability in input:\n        technique_id = ability.get('technique_id')\n        if technique_id in ['T1018', 'T1053', 'T1012', 'T1566.001', 'T1047', 'T1003']:\n            technique_ids.add(technique_id)\n            ability_ids.append(ability.get('ability_id'))\n            if len(technique_ids) == 6:\n                break\n    return sorted(ability_ids)"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::FormAgent",
+      "name": "Lab 5.4 Adv. Emulation Page",
+      "disabled": false,
+      "description": null,
+      "guid": "0b4e0fd1676fe969297db38e11732cdc",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "fields": "",
+        "mode": "success_page",
+        "submissionMessage": "Thank you for your submission",
+        "visibility": "tenant",
+        "anonymize": false,
+        "auto_submit": false,
+        "page_logo": {
+          "contents": "iVBORw0KGgoAAAANSUhEUgAAAFQAAAAYCAYAAABk8drWAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAARCSURBVHgB7VhLctpAEB1k7LVyA/kEgRMEn8BQ5e8qcALjE1icAPsEkJW/VeATwA1QTmDlBCE7l3/kPblbTIiMJcVOeaFXBRrN9Mz0vOnu6ZExBQoUKFCgwAdByX4ZDAbuw8PDwWw2a+LVk+rAcZxgZWWl02g0QpMSl5eXXRlnvLq62kLfqcmIi4uLZqlU+lwulztJ/aGvJ/p+39nZ6cu8R3j30c/f3t7umP8MRwtXV1df7+/vb6iMmZNJVJ6enppom5ydnbVNCpAIjENZF786Fn1kMgLE1PDocRz0HyTJQKe2zNOjMbBO3o1sZgS2Ybw29KqYd0ZEKMg8AGl980zAS3BhqV0Sv0Qmsho8/iCQi5T6XED/WtJmoj7W9/b2Vgk9gXUGWM+JtoF4H/VdFEdK/HvB4UIxuZ+2A2SPlykFayLhXkJ9z/wDsJlHaTZld3fXR4ho7O3tHWudRbyrxC+Ca+L4rxFuyXlJ7c7j4yOtKcuuuXd3d+0XJvMkZPwFWpm4cV64sLTBawuGB/UYus7Pz7vUB3NOYLGxV+EsuIHrT2ydITNCn5/sxyfaKdO0x02Qo8wNY7Yt52ChmeOKraAN2ZxlyBxLZb6xFCuvxWN4UE361PGYYn1egli0KSQJxIy42VIfso959rCehplFOYYUkY0MCJvn68C5CDUJLi2ho7msExVa3Pk0QL9veJxIuZ3W0pkZIMNYR3GodSBjA3VVlsUAPK1HprCOuqoQpmHGRV3FzNfcQvZQpSx06YjcFx3fMW8E7mBK0W6egwEk+ObZKkjqIO0hR1Ih/0vfYeGhpmAwgLpUX4OkMQv7+/shCNV0i+GtBrlYX5Kn2QLjNTeCMVvby6KkZ7IhsF/E6jyTDhqDfZMBJAHzUHHGP1cOuR8mJ05PTz0zPzs2MfZM20BgLAfCXGzmEAYTWbN4YRPy3JQxNusauo1V3hF3yopg4T1TbISSB3nSKLhZgL6HLDN8oLxp3ga8vPSTfnD3MTcTzw1ypeHASI6NX88+5Jy1tTWmF1luMRw8voHIKeeZbHBTHGCJgGseW4dU7pySrm3m6w62trZa9o/kQcdrkTNwaw9c8fZVhcV+oqtb5FY0DDgSTw7TKgKT7+gkhH0jyQK6Tt4kG+7eMtmMIAasLj6ELULqtsfw8oJ1jdA+YGjgLYvvPCcoR84Yc63+UWiIxucf78HiSsuUZFvLTpgF73rzSAI3FMS0MnQJtUCSmD/KdwvdGFfyygnb5NZIBGI8ShzTpwnzUcpaWU2oh1p8ytOVmDIsxIlImOkB0w/9AGFDFhaabJhCmcNlH0zgYoGxXHKxHW451LSF86vXQPdQ6sYqy7BmhYlofs7NPpImaZumR5y3jzVvsFLI0nW6ko9WRG6oaVg0v/nA0JCwjHhx1aktw3jGA+yF8dykr2ZisRVsZLg4XpIcSGWOG+b5ilagQIECBZLxG5sJ41WbSDouAAAAAElFTkSuQmCC\n",
+          "display_logo": false,
+          "name": "nites.jpeg",
+          "type": "image/jpeg"
+        },
+        "page_width": "large",
+        "pages_action_color": "#d10000",
+        "pages_appearance_mode": "dark",
+        "pages_background_color": "#F9F9F9",
+        "url_identifier": "622aa1285ee7ad7eb28b9f086a108261"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Create Operation",
+      "disabled": false,
+      "description": null,
+      "guid": "3bad08329383fb11bbba6f0dd39b4fe5",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "url": "http://<<RESOURCE.caldera_domain>>/api/v2/operations",
+        "method": "post",
+        "payload": {
+          "id": "Purple team run:<<NOW()>>",
+          "name": " Puprle team run: <<NOW()>>",
+          "adversary": {
+            "adversary_id": "<<create_adversary_profile.body.adversary_id>>",
+            "name": "<<create_adversary_profile.body.name>>",
+            "description": "<<create_adversary_profile.body.description>>",
+            "objective": "string",
+            "plugin": "atomic"
+          },
+          "autonomous": 1,
+          "auto_close": true,
+          "visibility": 1
+        },
+        "headers": {
+          "KEY": "<<CREDENTIAL.caldera_api_key>>"
+        },
+        "content_type": "application_json"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Explode Abilities",
+      "disabled": false,
+      "description": null,
+      "guid": "5acca582df611af045cc8767fa5e021e",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "explode",
+        "path": "=create_operation.body.adversary.atomic_ordering",
+        "to": "ability",
+        "limit": "500"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Get ability details",
+      "disabled": false,
+      "description": null,
+      "guid": "920e37cfc53382d59db7fe66608422b8",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "url": "http://<<RESOURCE.caldera_domain>>/api/v2/abilities/<<explode_abilities.ability>>",
+        "method": "get",
+        "headers": {
+          "KEY": "<<CREDENTIAL.caldera_api_key>>"
+        },
+        "content_type": "application_json"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Implode abilities",
+      "disabled": false,
+      "description": null,
+      "guid": "e1c3ab87e0c223d444da12e00d284a76",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "implode",
+        "item_path": "=get_ability_details.body",
+        "guid_path": "=explode_abilities.guid",
+        "size_path": "=explode_abilities.size"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Transform to table",
+      "disabled": false,
+      "description": null,
+      "guid": "52fee7429363bddfab171dd3c33eb0b0",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "automatic",
+        "input": "=get_details_abilities",
+        "guidance": "Transform the  input into a markdown table\n",
+        "language": "Python",
+        "script": "def main(input):\n    output = []\n    for item in input.get('output', []):\n        output.append([item.get('technique_id'), item.get('name')])\n\n    return '\\n'.join(['| Technique ID | Name |',\n                     '| --- | --- |'] + \n                    [' | '.join(row) for row in output])"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Wait for operation",
+      "disabled": false,
+      "description": "Wait 10 minutes before we have all the alerts",
+      "guid": "c80e03abfe85818000d61fd132cd2e1e",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "delay",
+        "seconds": "360"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Transform to Markdown",
+      "disabled": false,
+      "description": null,
+      "guid": "aef1610d0f01643e67e3494d51d98163",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "automatic",
+        "input": "=transform_detections_to_table.output.table",
+        "guidance": "Transform the  input into a markdown table\n",
+        "language": "Python",
+        "script": "def main(input):\n    rows = []\n    for event in input:\n        row = [\n            event.get('Story name'),\n            event.get('Timestamp'),\n            event.get('Detection Title'),\n            event.get('Level'),\n            event.get('Description Rule'),\n            event.get('Command'),\n            event.get('Event Type'),\n            event.get('Device IP'),\n            ', '.join(event.get('MITRE Tactic', [])),\n            ', '.join(event.get('MITRE Techniques', [])),\n            event.get('Generate Time'),\n            event.get('User'),\n            str(event.get('id'))\n        ]\n        rows.append(row)\n\n    table = '| Story name | Timestamp | Detection Title | Level | Description Rule | Command | Event Type | Device IP | MITRE Tactic | MITRE Techniques | Generate Time | User | id |\\n'\n    table += '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\\n'\n    for row in rows:\n        table += '| ' + ' | '.join(map(str, row)) + ' |\\n'\n\n    return table"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Update a case",
+      "disabled": false,
+      "description": "Update a case in Tines.\n\nLink to documentation: https://www.tines.com/api/cases/update",
+      "guid": "f31fe74072b7a30339294be4671497e9",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "url": "https://<<INPUT.tenant_domain>>/api/v2/cases/<<INPUT.case_id>>",
+        "method": "put",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.tines_credential>>"
+        },
+        "content_type": "application_json",
+        "local": {
+          "optional_parameters": {
+            "name": "=INPUT.case_name",
+            "description": "=INPUT.description",
+            "priority": "=INPUT.case_priority[0]",
+            "status": "=INPUT.case_status[0]",
+            "sub_status_id": "=INPUT.sub_status_id",
+            "author_email": "=INPUT.author_email",
+            "add_assignee_emails": "=SPLIT(REMOVE(INPUT.add_assignee_emails, \" \"), \",\")",
+            "remove_assignee_emails": "=SPLIT(REMOVE(INPUT.remove_assignee_emails, \" \"), \",\")",
+            "add_tag_names": "=SPLIT(INPUT.add_tags, \",\")",
+            "remove_tag_names": "=SPLIT(INPUT.remove_tags, \",\")",
+            "opened_at": "=DATE(INPUT.opened_at, \"%Y-%m-%dT%R\")",
+            "resolved_at": "=DATE(INPUT.resolved_at, \"%Y-%m-%dT%R\")",
+            "closure_conditions": "=INPUT.closure_conditions"
+          },
+          "final_payload": "=REJECT(\n  LOCAL.optional_parameters,\n  LAMBDA(\n    item,\n    OR(\n      item = NULL,\n      IF(\n        OR(\n          TYPE(item) = \"TrueClass\",\n          TYPE(item) = \"FalseClass\",\n          TYPE(item) = \"Integer\"\n        ),\n        IS_EMPTY(TEXT(item)),\n        IS_EMPTY(item)\n      )\n    )\n  )\n)"
+        },
+        "payload": "=LOCAL.final_payload"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "a565ae513c50b97ce9b10d5cf981bc607d64830a71542f7dab1dd06e7a649caa",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Build Results",
+      "disabled": false,
+      "description": null,
+      "guid": "a96c984e81d97e7b36e0e82c009f9342",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "techniques": "=get_details_abilities.output",
+          "detections": "=transform_detections_to_table.output.attack_techniques"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Transform vs table to Markdown",
+      "disabled": false,
+      "description": null,
+      "guid": "cd083ef5f5900e5c3002fb158cce9b8f",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "automatic",
+        "input": "=compare_techniques_with_detections.output.detected",
+        "guidance": "Transform the  input into a markdown table with title technique ID and technique name\n",
+        "language": "Python",
+        "script": "def main(input):\n    table = \"| Technique ID | Technique Name |\\n| --- | --- |\\n\"\n    for technique in input:\n        table += f\"| {technique.get('technique_id')} | {technique.get('name')} |\\n\"\n    return table"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Transform undetected table to Markdown",
+      "disabled": false,
+      "description": null,
+      "guid": "397b5af0fed2b4d3f55704df975a6724",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "automatic",
+        "input": "=compare_techniques_with_detections.output.undetected",
+        "guidance": "Transform the  input into a markdown table with title technique ID and technique name\n",
+        "language": "Python",
+        "script": "def main(input):\n    table = []\n    for item in input:\n        technique_id = item.get('technique_id')\n        name = item.get('name')\n        table.append([technique_id, name])\n\n    header = '| Technique ID | Technique Name |'\n    divider = '|:-------------|:--------------|'\n    rows = ['|{}|{}|'.format(tid, name) for tid, name in table]\n    return '\\n'.join([header, divider] + rows)"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::RunScriptAgent",
+      "name": "Get details abilities",
+      "disabled": false,
+      "description": null,
+      "guid": "2224a5590350b6cc28b36e028289985d",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "language": "Python",
+        "timeout": 10,
+        "script": "def main(input):\n    output = []\n    for entry in input:\n        output.append({\n            \"technique_id\": entry.get(\"technique_id\"),\n            \"name\": entry.get(\"name\")\n        })\n    return output",
+        "input": "=implode_abilities"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "List Records with a Filter",
+      "disabled": false,
+      "description": null,
+      "guid": "630a85a635dbc1502aab448e52adca31",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
+      "options": {
+        "url": "<<list_records_with_a_filter.body.meta.next_page>>",
+        "content_type": "application_json",
+        "method": "get",
+        "headers": {
+          "Authorization": "Bearer <<CREDENTIAL.sec598_tines_credentials>>",
+          "User-Agent": "Tines"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "If has_more",
+      "disabled": false,
+      "description": "",
+      "guid": "92936e8a8dbf9a256d1b6083c2b1aece",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
+      "options": {
+        "rules": [
+          {
+            "path": "<<list_records_with_a_filter.body.meta.next_page>>",
+            "type": "regex",
+            "value": ".+"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "If not has_more",
+      "disabled": false,
+      "description": null,
+      "guid": "18fac57252b08e83083e1540a217b1a8",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
+      "options": {
+        "rules": [
+          {
+            "path": "<<list_records_with_a_filter.body.meta.next_page>>",
+            "type": "!regex",
+            "value": ".+"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Merge Results",
+      "disabled": false,
+      "description": null,
+      "guid": "4c274a23539d2c91989de2857415f03e",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
+      "options": {
+        "mode": "message_only",
+        "payload": {
+          "results_array": "=CONCAT(FLATTEN(merge_results.results_array), list_records_with_a_filter.body.record_results)"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::RunScriptAgent",
+      "name": "Compare techniques with detections",
+      "disabled": false,
+      "description": null,
+      "guid": "dbcd998e72daf47f2eac7d659979c944",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "language": "Python",
+        "timeout": 10,
+        "script": "def main(input):\n    detected = []\n    undetected = []\n    \n    for technique in input.get('techniques', []):\n        technique_id = technique.get('technique_id')\n        name = technique.get('name')\n        \n        if any(detection.lower() == technique_id.lower() for detection in input.get('detections', [])):\n            detected.append({'name': name, 'technique_id': technique_id})\n        else:\n            undetected.append({'name': name, 'technique_id': technique_id})\n    \n    result = {}\n    if detected:\n        result['detected'] = detected\n    if undetected:\n        result['undetected'] = undetected\n    \n    return result",
+        "input": "=build_results"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    }
+  ],
+  "diagram_notes": [
+    {
+      "content": "# Detection Flow - Lima Charlie \nThis flow establishes a webhook that will receive events from Lima Charlie and analyses the results.\n\nA webhook is litsening on incoming alerts",
+      "position": [
+        -480,
+        735
+      ],
+      "guid": "85d0dc0f1c4abf0c33a95c968ba63980",
+      "width": 270
+    },
+    {
+      "content": "# Emulation flow: Run Adversary\n\nRun your campaign in Caldera ",
+      "position": [
+        105,
+        120
+      ],
+      "guid": "4241cda0e08c28447832dd583fa135f7",
+      "width": 270
+    },
+    {
+      "content": "# Creating a case for our campaign\nWithin tines we now can create a case that our operation is running and add some evidences. \n\nWhen the operation is completly finished we can have a look at the detection records and match the executed techniques vs the detected techniques",
+      "position": [
+        -180,
+        855
+      ],
+      "guid": "557a3b805c654a0211869f660414ee71",
+      "width": 270
+    },
+    {
+      "content": "The results from this API call are appended to an array managed by the `Merge Results` Action. If the array does not exist, it will be created automatically.\n\nEach time around this loop, more results will be appended to the same array.",
+      "position": [
+        -555,
+        1395
+      ],
+      "guid": "e8fe112e8bad148fb42f3cd0eb4a6acd",
+      "width": 270
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "receiver": 1
+    },
+    {
+      "source": 1,
+      "receiver": 2
+    },
+    {
+      "source": 3,
+      "receiver": 25
+    },
+    {
+      "source": 4,
+      "receiver": 16
+    },
+    {
+      "source": 5,
+      "receiver": 15
+    },
+    {
+      "source": 6,
+      "receiver": 10
+    },
+    {
+      "source": 7,
+      "receiver": 8
+    },
+    {
+      "source": 8,
+      "receiver": 6
+    },
+    {
+      "source": 9,
+      "receiver": 7
+    },
+    {
+      "source": 10,
+      "receiver": 11
+    },
+    {
+      "source": 11,
+      "receiver": 12
+    },
+    {
+      "source": 12,
+      "receiver": 13
+    },
+    {
+      "source": 13,
+      "receiver": 21
+    },
+    {
+      "source": 14,
+      "receiver": 5
+    },
+    {
+      "source": 15,
+      "receiver": 3
+    },
+    {
+      "source": 16,
+      "receiver": 18
+    },
+    {
+      "source": 18,
+      "receiver": 26
+    },
+    {
+      "source": 19,
+      "receiver": 20
+    },
+    {
+      "source": 20,
+      "receiver": 17
+    },
+    {
+      "source": 21,
+      "receiver": 14
+    },
+    {
+      "source": 22,
+      "receiver": 25
+    },
+    {
+      "source": 23,
+      "receiver": 22
+    },
+    {
+      "source": 24,
+      "receiver": 4
+    },
+    {
+      "source": 25,
+      "receiver": 24
+    },
+    {
+      "source": 25,
+      "receiver": 23
+    },
+    {
+      "source": 26,
+      "receiver": 19
+    }
+  ],
+  "diagram_layout": "{\"2d7930cab79e14f4cea2ee524f5f2ba8\":[-465,930],\"1fde1512fba96cca194052b1f9342804\":[-465,1005],\"8c073770494f7f765d61ec9ac3db797d\":[-465,1095],\"620b8325648e0030961a21e7d4b4a9c2\":[30,1305],\"8b8ca0547c7bd64cc3808b49cbf67198\":[0,1545],\"8c169fa88a605807a1528b805dabe9bc\":[15,1095],\"b4be0814f00b9ea5a320ac4ab0d5f273\":[120,705],\"5dcac4582866930f9d7a61076da06844\":[120,510],\"13983880e121fb9ef59c4c1bb4b78470\":[120,615],\"0b4e0fd1676fe969297db38e11732cdc\":[-15,15],\"3bad08329383fb11bbba6f0dd39b4fe5\":[120,795],\"5acca582df611af045cc8767fa5e021e\":[120,870],\"920e37cfc53382d59db7fe66608422b8\":[285,945],\"e1c3ab87e0c223d444da12e00d284a76\":[285,1035],\"52fee7429363bddfab171dd3c33eb0b0\":[285,1200],\"c80e03abfe85818000d61fd132cd2e1e\":[15,1185],\"aef1610d0f01643e67e3494d51d98163\":[0,1620],\"f31fe74072b7a30339294be4671497e9\":[60,2145],\"a96c984e81d97e7b36e0e82c009f9342\":[0,1710],\"cd083ef5f5900e5c3002fb158cce9b8f\":[75,1890],\"397b5af0fed2b4d3f55704df975a6724\":[15,2025],\"2224a5590350b6cc28b36e028289985d\":[285,1110],\"630a85a635dbc1502aab448e52adca31\":[-255,1530],\"92936e8a8dbf9a256d1b6083c2b1aece\":[-255,1455],\"18fac57252b08e83083e1540a217b1a8\":[0,1455],\"4c274a23539d2c91989de2857415f03e\":[-255,1380],\"dbcd998e72daf47f2eac7d659979c944\":[-180,1800]}",
+  "send_to_story_enabled": false,
+  "entry_agent_guid": null,
+  "exit_agent_guids": [],
+  "exit_agent_guid": null,
+  "api_entry_action_guids": [],
+  "api_exit_action_guids": [],
+  "keep_events_for": 86400,
+  "reporting_status": true,
+  "send_to_story_access": null,
+  "story_library_metadata": {},
+  "parent_only_send_to_story": false,
+  "monitor_failures": false,
+  "send_to_stories": [],
+  "form": {
+    "fields": [
+      {
+        "name": "Button",
+        "description": "",
+        "required": false,
+        "type": "BUTTON",
+        "multi_select": false,
+        "options": [
+          "Option 1",
+          "Option 2"
+        ],
+        "ranking": 0,
+        "max_characters": null,
+        "default_value": null,
+        "content": "Submit"
+      },
+      {
+        "name": "Heading",
+        "description": "",
+        "required": false,
+        "type": "TITLE",
+        "multi_select": false,
+        "options": [
+          "Option 1",
+          "Option 2"
+        ],
+        "ranking": 0,
+        "max_characters": null,
+        "default_value": "",
+        "content": "LANS LAB 5.4 - Purple Team Emulation:"
+      },
+      {
+        "name": "Paragraph",
+        "description": "",
+        "required": false,
+        "type": "PARAGRAPH",
+        "multi_select": false,
+        "options": [
+          "Option 1",
+          "Option 2"
+        ],
+        "ranking": 0,
+        "max_characters": null,
+        "default_value": "",
+        "content": "Create your emulation plan, givit a name and provide a list of techniques to cover:"
+      },
+      {
+        "name": "Emulation plan name",
+        "description": "",
+        "required": true,
+        "type": "SHORT_TEXT",
+        "multi_select": false,
+        "options": [
+          "Option 1",
+          "Option 2"
+        ],
+        "ranking": 0,
+        "max_characters": null,
+        "default_value": "\"Purple Team Run Profile APT28\"",
+        "content": null
+      }
+    ],
+    "visibility": "tenant",
+    "agent_guid": "0b4e0fd1676fe969297db38e11732cdc",
+    "success_message": "Thank you for your submission",
+    "loading_message": ""
+  },
+  "synchronous_webhooks_enabled": false,
+  "forms": [
+    {
+      "fields": [
+        {
+          "name": "Button",
+          "description": "",
+          "required": false,
+          "type": "BUTTON",
+          "multi_select": false,
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "ranking": 0,
+          "max_characters": null,
+          "default_value": null,
+          "content": "Submit"
+        },
+        {
+          "name": "Heading",
+          "description": "",
+          "required": false,
+          "type": "TITLE",
+          "multi_select": false,
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "ranking": 0,
+          "max_characters": null,
+          "default_value": "",
+          "content": "LANS LAB 5.4 - Purple Team Emulation:"
+        },
+        {
+          "name": "Paragraph",
+          "description": "",
+          "required": false,
+          "type": "PARAGRAPH",
+          "multi_select": false,
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "ranking": 0,
+          "max_characters": null,
+          "default_value": "",
+          "content": "Create your emulation plan, givit a name and provide a list of techniques to cover:"
+        },
+        {
+          "name": "Emulation plan name",
+          "description": "",
+          "required": true,
+          "type": "SHORT_TEXT",
+          "multi_select": false,
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "ranking": 0,
+          "max_characters": null,
+          "default_value": "\"Purple Team Run Profile APT28\"",
+          "content": null
+        }
+      ],
+      "visibility": "tenant",
+      "agent_guid": "0b4e0fd1676fe969297db38e11732cdc",
+      "success_message": "Thank you for your submission",
+      "loading_message": ""
+    }
+  ],
+  "pages": [
+    {
+      "containers": [
+        {
+          "guid": "47c9319d78bc5348ce6319c05f302941",
+          "ranking": 0,
+          "category": 0
+        },
+        {
+          "guid": "67ef4eee7a690abb8a844134ce613121",
+          "ranking": 1073741824,
+          "category": 0
+        },
+        {
+          "guid": "a506971ed1e3f68240f631e03dc67fa5",
+          "ranking": 1342177280,
+          "category": 0
+        },
+        {
+          "guid": "530c31dfcedf5e8eb6818e9a852328ce",
+          "ranking": 1610612736,
+          "category": 0
+        }
+      ],
+      "fields": [
+        {
+          "name": "Button",
+          "description": "",
+          "required": false,
+          "type": "BUTTON",
+          "multi_select": false,
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "ranking": 0,
+          "max_characters": null,
+          "default_value": null,
+          "content": "Submit",
+          "validation_pattern": null,
+          "style": "primary",
+          "container_guid": "530c31dfcedf5e8eb6818e9a852328ce",
+          "graph_type": 0,
+          "graph_direction": "HORIZONTAL",
+          "date_mode": "DATE",
+          "store_value_as": ""
+        },
+        {
+          "name": "Heading",
+          "description": "",
+          "required": false,
+          "type": "TITLE",
+          "multi_select": false,
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "ranking": 0,
+          "max_characters": null,
+          "default_value": "",
+          "content": "LANS LAB 5.4 - Purple Team Emulation:",
+          "validation_pattern": null,
+          "style": "primary",
+          "container_guid": "47c9319d78bc5348ce6319c05f302941",
+          "graph_type": 0,
+          "graph_direction": "HORIZONTAL",
+          "date_mode": "DATE",
+          "store_value_as": ""
+        },
+        {
+          "name": "Paragraph",
+          "description": "",
+          "required": false,
+          "type": "PARAGRAPH",
+          "multi_select": false,
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "ranking": 0,
+          "max_characters": null,
+          "default_value": "",
+          "content": "Create your emulation plan, givit a name and provide a list of techniques to cover:",
+          "validation_pattern": null,
+          "style": "primary",
+          "container_guid": "67ef4eee7a690abb8a844134ce613121",
+          "graph_type": 0,
+          "graph_direction": "HORIZONTAL",
+          "date_mode": "DATE",
+          "store_value_as": ""
+        },
+        {
+          "name": "Emulation plan name",
+          "description": "",
+          "required": true,
+          "type": "SHORT_TEXT",
+          "multi_select": false,
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "ranking": 0,
+          "max_characters": null,
+          "default_value": "\"Purple Team Run Profile APT28\"",
+          "content": null,
+          "validation_pattern": null,
+          "style": "primary",
+          "container_guid": "a506971ed1e3f68240f631e03dc67fa5",
+          "graph_type": 0,
+          "graph_direction": "HORIZONTAL",
+          "date_mode": "DATE",
+          "store_value_as": "=password_value"
+        }
+      ],
+      "visibility": "tenant",
+      "agent_guid": "0b4e0fd1676fe969297db38e11732cdc",
+      "success_message": "Thank you for your submission",
+      "loading_message": "",
+      "logo_contents": "iVBORw0KGgoAAAANSUhEUgAAAFQAAAAYCAYAAABk8drWAAAACXBIWXMAAAsT\nAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAARCSURB\nVHgB7VhLctpAEB1k7LVyA/kEgRMEn8BQ5e8qcALjE1icAPsEkJW/VeATwA1Q\nTmDlBCE7l3/kPblbTIiMJcVOeaFXBRrN9Mz0vOnu6ZExBQoUKFCgwAdByX4Z\nDAbuw8PDwWw2a+LVk+rAcZxgZWWl02g0QpMSl5eXXRlnvLq62kLfqcmIi4uL\nZqlU+lwulztJ/aGvJ/p+39nZ6cu8R3j30c/f3t7umP8MRwtXV1df7+/vb6iM\nmZNJVJ6enppom5ydnbVNCpAIjENZF786Fn1kMgLE1PDocRz0HyTJQKe2zNOj\nMbBO3o1sZgS2Ybw29KqYd0ZEKMg8AGl980zAS3BhqV0Sv0Qmsho8/iCQi5T6\nXED/WtJmoj7W9/b2Vgk9gXUGWM+JtoF4H/VdFEdK/HvB4UIxuZ+2A2SPlykF\nayLhXkJ9z/wDsJlHaTZld3fXR4ho7O3tHWudRbyrxC+Ca+L4rxFuyXlJ7c7j\n4yOtKcuuuXd3d+0XJvMkZPwFWpm4cV64sLTBawuGB/UYus7Pz7vUB3NOYLGx\nV+EsuIHrT2ydITNCn5/sxyfaKdO0x02Qo8wNY7Yt52ChmeOKraAN2ZxlyBxL\nZb6xFCuvxWN4UE361PGYYn1egli0KSQJxIy42VIfso959rCehplFOYYUkY0M\nCJvn68C5CDUJLi2ho7msExVa3Pk0QL9veJxIuZ3W0pkZIMNYR3GodSBjA3VV\nlsUAPK1HprCOuqoQpmHGRV3FzNfcQvZQpSx06YjcFx3fMW8E7mBK0W6egwEk\n+ObZKkjqIO0hR1Ih/0vfYeGhpmAwgLpUX4OkMQv7+/shCNV0i+GtBrlYX5Kn\n2QLjNTeCMVvby6KkZ7IhsF/E6jyTDhqDfZMBJAHzUHHGP1cOuR8mJ05PTz0z\nPzs2MfZM20BgLAfCXGzmEAYTWbN4YRPy3JQxNusauo1V3hF3yopg4T1TbISS\nB3nSKLhZgL6HLDN8oLxp3ga8vPSTfnD3MTcTzw1ypeHASI6NX88+5Jy1tTWm\nF1luMRw8voHIKeeZbHBTHGCJgGseW4dU7pySrm3m6w62trZa9o/kQcdrkTNw\naw9c8fZVhcV+oqtb5FY0DDgSTw7TKgKT7+gkhH0jyQK6Tt4kG+7eMtmMIAas\nLj6ELULqtsfw8oJ1jdA+YGjgLYvvPCcoR84Yc63+UWiIxucf78HiSsuUZFvL\nTpgF73rzSAI3FMS0MnQJtUCSmD/KdwvdGFfyygnb5NZIBGI8ShzTpwnzUcpa\nWU2oh1p8ytOVmDIsxIlImOkB0w/9AGFDFhaabJhCmcNlH0zgYoGxXHKxHW45\n1LSF86vXQPdQ6sYqy7BmhYlofs7NPpImaZumR5y3jzVvsFLI0nW6ko9WRG6o\naVg0v/nA0JCwjHhx1aktw3jGA+yF8dykr2ZisRVsZLg4XpIcSGWOG+b5ilag\nQIECBZLxG5sJ41WbSDouAAAAAElFTkSuQmCC\n",
+      "logo_filename": "nites.jpeg",
+      "display_logo": false,
+      "icon": ":adhesive_bandage:",
+      "sso_groups": null
+    }
+  ],
+  "tags": [],
+  "time_saved_unit": "minutes",
+  "time_saved_value": 0,
+  "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+  "integration_product": null,
+  "integration_vendor": null,
+  "exported_at": "2024-07-12T11:54:17Z",
+  "icon": ":date:",
+  "integrations": [
+    {
+      "action_inputs": [
+        {
+          "name": "Tenant domain",
+          "description": "The domain of the tenant.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 0,
+          "value": "\"<<META.tenant.domain>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Range start",
+          "description": "The start time for the time range of record results.",
+          "required": true,
+          "type": "DATE",
+          "ranking": 1073741824,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Range end",
+          "description": "The end time for the time range of record results.",
+          "required": true,
+          "type": "DATE",
+          "ranking": 1610612736,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Record type ID",
+          "description": "The ID of the record result to retrieve. Identify the record ID using the INFO key. Optional if record field IDs are specified.",
+          "required": false,
+          "type": "NUMBER",
+          "ranking": 1879048192,
+          "value": "\"=INFO.record.detected_alerts.id\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Page",
+          "description": "The page number of results to fetch. Relevant for queries with multiple pages of results",
+          "required": false,
+          "type": "NUMBER",
+          "ranking": 1946157056,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Tines credential",
+          "description": "",
+          "required": false,
+          "type": "CREDENTIAL",
+          "ranking": 2013265920,
+          "value": "\"=CREDENTIAL.sec598_tines_credentials\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Per page",
+          "description": "Set the number of record results returned per page. Defaults to 20, maximum is 500.",
+          "required": false,
+          "type": "NUMBER",
+          "ranking": 2113929216,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Order field ID",
+          "description": "The ID of the field used to order the record results (order specified by 'sort direction order' parameter). Identify the field ID using the INFO key.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2130706432,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Sort direction order",
+          "description": "Sorts the list in ascending or descending order. Defaults to descending. Identify the ID to sort by in the 'order field ID' parameter.",
+          "required": false,
+          "type": "OPTION",
+          "ranking": 2139095040,
+          "value": "\"\"",
+          "options": [
+            "Ascending",
+            "Descending"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Story IDs",
+          "description": "Comma separated list of story IDs to filter the results.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2143289344,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Record field IDs",
+          "description": "Comma separated list of record field IDs to filter the results. Identify the record field ID using the INFO key. Optional if record type ID is specified.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2145386496,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Filters",
+          "description": "Add as many filters as desired as an object with the field_id, operator, and value specified.",
+          "required": true,
+          "type": "OBJECT",
+          "ranking": 2146435072,
+          "value": "[]",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Test mode",
+          "description": "Select 'yes' to filter by records created in 'test' mode for stories with change control. Defaults to 'no'.",
+          "required": false,
+          "type": "BOOLEAN",
+          "ranking": 2146959360,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        }
+      ],
+      "action_guid": "620b8325648e0030961a21e7d4b4a9c2",
+      "product": "Tines"
+    },
+    {
+      "action_inputs": [
+        {
+          "name": "Tenant domain",
+          "description": "The domain of the tenant.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 0,
+          "value": "\"<<META.tenant.domain>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Tines credential",
+          "description": "",
+          "required": false,
+          "type": "CREDENTIAL",
+          "ranking": 1073741824,
+          "value": "\"=CREDENTIAL.sec598_tines_credentials\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Case ID",
+          "description": "ID of case to update.",
+          "required": true,
+          "type": "NUMBER",
+          "ranking": 1610612736,
+          "value": "\"=create_adversary_emulation_case.case_id\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Case status",
+          "description": "The case status - open or closed.",
+          "required": false,
+          "type": "OPTION",
+          "ranking": 1879048192,
+          "value": "\"\"",
+          "options": [
+            "OPEN",
+            "CLOSED"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Case priority",
+          "description": "The case priority.",
+          "required": false,
+          "type": "OPTION",
+          "ranking": 2013265920,
+          "value": "\"\"",
+          "options": [
+            "CRITICAL",
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "INFO"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Author email",
+          "description": "The email of the user creating the cases.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2080374784,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Opened at",
+          "description": "Timestamp representing the date and time the case was opened at.",
+          "required": false,
+          "type": "DATE",
+          "ranking": 2113929216,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Resolved at",
+          "description": "Timestamp representing the date and time the case was resolved at.",
+          "required": false,
+          "type": "DATE",
+          "ranking": 2130706432,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Case name",
+          "description": "The name of the case.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2143289344,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Add assignee emails",
+          "description": "A comma separated list of user email addresses to assign  the case.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2145386496,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Remove assignee emails",
+          "description": "A comma separated list of user email addresses to remove from the case.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2146435072,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Add tags",
+          "description": "A comma separated list of tags to add to the case.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2146959360,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Remove tags",
+          "description": "A comma separated list of tags to remove from the case.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2147221504,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Closure conditions",
+          "description": "An array of closure requirements in the form of a set of formula rules that need to evaluate to true to enable the closing of a case. Ex: `[{\"name\":\"User assigned\", \"formula\":\"\\\\=SIZE(team_case.assignees) > 0\"}]`",
+          "required": false,
+          "type": "OBJECT",
+          "ranking": 2147450880,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Sub status ID",
+          "description": "The case sub-status ID",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2147467264,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        },
+        {
+          "name": "Description",
+          "description": "The case description. Follows [markdown formatting](https://www.markdownguide.org/basic-syntax/).",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 2147475456,
+          "value": "\"# Detected Techiques Techniques\\n<<transform_vs_table_to_markdown.output>>\\n\\n# Undetected Techniques \\n<<transform_undetected_table_to_markdown.output>>\\n\\n\\n\\n\\n\\n# All Techniques executed\\n\\n<<transform_to_table.output>>\\n\\n# All Detections triggered\\n\\n<<transform_to_markdown.output>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false
+        }
+      ],
+      "action_guid": "f31fe74072b7a30339294be4671497e9",
+      "product": "Tines"
+    }
+  ]
+}
