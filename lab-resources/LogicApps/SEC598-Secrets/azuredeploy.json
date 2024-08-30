@@ -1,303 +1,306 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "metadata": {
-    "_generator": {
-      "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "7818158618457663367"
-    }
-  },
-  "parameters": {
-    "workflows_SEC598_Secrets_name": {
-      "type": "string",
-      "defaultValue": "SEC598-Secrets"
-    },
-    "workspaces_SEC598_Workspace_name": {
-      "type": "string",
-      "defaultValue": "SEC598-Workspace"
-    },
-    "solutions_SecurityInsights_sec598_workspace_name": {
-      "type": "string",
-      "defaultValue": "SecurityInsights(sec598-workspace)"
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "eastus",
-      "metadata": {
-        "description": "Location for all resources."
-      }
-    }
-  },
-  "resources": [
-    {
-      "type": "Microsoft.Web/connections",
-      "apiVersion": "2018-07-01-preview",
-      "name": "office365",
-      "location": "[parameters('location')]",
-      "properties": {
-        "api": {
-          "id": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), 'office365')]"
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_github_name": {
+            "defaultValue": "github",
+            "type": "String"
         },
-        "displayName": "office365connector",
-        "parameterValues": {}
-      }
-    },
-    {
-      "type": "Microsoft.Web/connections",
-      "apiVersion": "2016-06-01",
-      "name": "azuresentinel",
-      "location": "[parameters('location')]",
-      "kind": "V1",
-      "properties": {
-        "api": {
-          "name": "azuresentinel",
-          "id": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), 'azuresentinel')]",
-          "displayName": "Microsoft Sentinel",
-          "description": "Cloud-native SIEM with a built-in AI so you can focus on what matters most",
-          "type": "Microsoft.Web/locations/managedApis"
+        "connections_azuresentinel_name": {
+            "defaultValue": "azuresentinel",
+            "type": "String"
         },
-        "parameterValueSet": {
-          "name": "managedidentityAuth",
-          "values": {}
+        "workflows_SEC598_Secrets_name": {
+            "defaultValue": "SEC598-Secrets",
+            "type": "String"
         },
-        "displayName": "azuresentinel"
-      }
-    },
-    {
-      "type": "Microsoft.Logic/workflows",
-      "apiVersion": "2017-07-01",
-      "name": "[parameters('workflows_SEC598_Secrets_name')]",
-      "location": "[parameters('location')]",
-      "identity": {
-        "type": "SystemAssigned"
-      },
-      "properties": {
-        "state": "Enabled",
-        "definition": {
-          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-          "contentVersion": "1.0.0.0",
-          "parameters": {
-            "Mail adres to": {
-              "defaultValue": "info@sec598.com",
-              "type": "String"
-            },
-            "$connections": {
-              "defaultValue": {},
-              "type": "Object"
-            }
-          },
-          "triggers": {
-            "Microsoft_Sentinel_incident": {
-              "type": "ApiConnectionWebhook",
-              "inputs": {
-                "host": {
-                  "connection": {
-                    "name": "@parameters('$connections')['azuresentinel']['connectionId']"
-                  }
-                },
-                "body": {
-                  "callback_url": "@{listCallbackUrl()}"
-                },
-                "path": "/incident-creation"
-              }
-            }
-          },
-          "actions": {
-            "For_each": {
-              "foreach": "@triggerBody()?['object']?['properties']?['Alerts']",
-              "actions": {
-                "Parse_addeditional_values_in_incident": {
-                  "type": "ParseJson",
-                  "inputs": {
-                    "content": "@items('For_each')?['properties']?['additionalData']?['Custom Details']",
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "ApplicationName": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "TimeGenerated": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "ActivityDisplayName": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "Property": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "Send_approval_Mail_to_Contact_Person_for_change": {
-                  "runAfter": {
-                    "Parse_addeditional_values_in_incident": [
-                      "Succeeded"
-                    ]
-                  },
-                  "type": "ApiConnectionWebhook",
-                  "inputs": {
-                    "host": {
-                      "connection": {
-                        "name": "@parameters('$connections')['office365']['connectionId']"
-                      }
-                    },
-                    "body": {
-                      "NotificationUrl": "@{listCallbackUrl()}",
-                      "Message": {
-                        "To": "jeroen@agron.be",
-                        "Body": "You received an approval request for @{body('Parse_addeditional_values_in_incident')?['ApplicationName']} on @{body('Parse_addeditional_values_in_incident')?['TimeGenerated']} \n<br /> \nFull details of the Alert below: \n<br /> \n@{body('Parse_addeditional_values_in_incident')?['Property']}\n<br />",
-                        "Importance": "Normal",
-                        "HideHTMLMessage": false,
-                        "ShowHTMLConfirmationDialog": false,
-                        "Subject": "Approval Request-@{body('Parse_addeditional_values_in_incident')?['ActivityDisplayName'] } - @{body('Parse_addeditional_values_in_incident')?['ApplicationName']}",
-                        "Options": "Approve, Reject"
-                      }
-                    },
-                    "path": "/approvalmail/$subscriptions"
-                  }
-                },
-                "Condition": {
-                  "actions": {
-                    "Add_comment_to_incident_(V3)": {
-                      "type": "ApiConnection",
-                      "inputs": {
-                        "host": {
-                          "connection": {
-                            "name": "@parameters('$connections')['azuresentinel']['connectionId']"
-                          }
-                        },
-                        "method": "post",
-                        "body": {
-                          "incidentArmId": "@triggerBody()?['object']?['id']",
-                          "message": "<p>The application @{body('Parse_addeditional_values_in_incident')?['ApplicationName']} is approved!</p>"
-                        },
-                        "path": "/Incidents/Comment"
-                      }
-                    }
-                  },
-                  "runAfter": {
-                    "Send_approval_Mail_to_Contact_Person_for_change": [
-                      "Succeeded"
-                    ]
-                  },
-                  "else": {
-                    "actions": {
-                      "Send_an_email_(V2)": {
-                        "type": "ApiConnection",
-                        "inputs": {
-                          "host": {
-                            "connection": {
-                              "name": "@parameters('$connections')['office365']['connectionId']"
-                            }
-                          },
-                          "method": "post",
-                          "body": {
-                            "To": "info@sec598.com",
-                            "Subject": "Application Update - Rejected",
-                            "Body": "<p>Request for @{body('Parse_addeditional_values_in_incident')?['ApplicationName'] } is Rejected!</p>",
-                            "Importance": "Normal"
-                          },
-                          "path": "/v2/Mail"
-                        }
-                      }
-                    }
-                  },
-                  "expression": {
-                    "and": [
-                      {
-                        "equals": [
-                          "@body('Send_approval_Mail_to_Contact_Person_for_change')?['SelectedOption']",
-                          "Approve"
-                        ]
-                      }
-                    ]
-                  },
-                  "type": "If"
-                }
-              },
-              "runAfter": {},
-              "type": "Foreach"
-            }
-          },
-          "outputs": {}
-        },
-        "parameters": {
-          "$connections": {
-            "value": {
-              "azuresentinel": {
-                "id": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), 'azuresentinel')]",
-                "connectionId": "[resourceId('Microsoft.Web/connections', 'azuresentinel')]",
-                "connectionName": "[format('azuresentinel-{0}', parameters('workflows_SEC598_Secrets_name'))]"
-              },
-              "office365": {
-                "id": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), 'office365')]",
-                "connectionId": "[resourceId('Microsoft.Web/connections', 'office365')]",
-                "connectionName": "[format('office365-{0}', parameters('workflows_SEC598_Secrets_name'))]"
-              }
-            }
-          }
+        "workspaces_SEC598_Wokspace_name": {
+            "defaultValue": "SEC598-Wokspace",
+            "type": "String"
+        },        
+        "solutions_SecurityInsights_sec598_workspace__name": {
+            "defaultValue": "Sentinel598",
+            "type": "String"
         }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/connections', 'azuresentinel')]",
-        "[resourceId('Microsoft.Web/connections', 'office365')]"
-      ]
     },
-    {
-      "type": "Microsoft.OperationalInsights/workspaces",
-      "apiVersion": "2021-12-01-preview",
-      "name": "[parameters('workspaces_SEC598_Workspace_name')]",
-      "location": "[parameters('location')]",
-      "tags": {
-        "SANS": "SEC598"
-      },
-      "properties": {
-        "sku": {
-          "name": "pergb2018"
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_azuresentinel_name')]",
+            "location": "northcentralus",
+            "kind": "V1",
+            "properties": {
+                "displayName": "event-82690-2359195-sec598-labs-azure-of1d9@sansstudent0186bbc6817dd1.onmicrosoft.com",
+                "statuses": [
+                    {
+                        "status": "Connected"
+                    }
+                ],
+                "customParameterValues": {},
+                "nonSecretParameterValues": {
+                    "token:tenantId": "9b39c242-61f3-436c-ba07-f6f89eb0c096",
+                    "token:grantType": "code"
+                },
+                "createdTime": "2024-08-27T18:55:37.9110471Z",
+                "changedTime": "2024-08-27T20:14:19.7763255Z",
+                "api": {
+                    "name": "[parameters('connections_azuresentinel_name')]",
+                    "displayName": "Microsoft Sentinel",
+                    "description": "Cloud-native SIEM with a built-in AI so you can focus on what matters most",
+                    "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1702/1.0.1702.3810/', parameters('connections_azuresentinel_name'), '/icon.png')]",
+                    "brandColor": "#0072C6",
+                    "id": "[concat('/subscriptions/89a595bf-0df1-4d5f-9696-28beaa72e442/providers/Microsoft.Web/locations/northcentralus/managedApis/', parameters('connections_azuresentinel_name'))]",
+                    "type": "Microsoft.Web/locations/managedApis"
+                },
+                "testLinks": []
+            }
         },
-        "retentionInDays": 30,
-        "features": {
-          "enableLogAccessUsingOnlyResourcePermissions": true
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_github_name')]",
+            "location": "northcentralus",
+            "kind": "V1",
+            "properties": {
+                "displayName": "Vjeroen",
+                "statuses": [
+                    {
+                        "status": "Connected"
+                    }
+                ],
+                "customParameterValues": {},
+                "nonSecretParameterValues": {},
+                "createdTime": "2024-08-27T19:00:32.4350025Z",
+                "changedTime": "2024-08-27T19:03:08.1990425Z",
+                "api": {
+                    "name": "[parameters('connections_github_name')]",
+                    "displayName": "GitHub",
+                    "description": "GitHub is a web-based Git repository hosting service. It offers all of the distributed revision control and source code management (SCM) functionality of Git as well as adding its own features.",
+                    "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1704/1.0.1704.3827/', parameters('connections_github_name'), '/icon.png')]",
+                    "brandColor": "#4078c0",
+                    "id": "[concat('/subscriptions/89a595bf-0df1-4d5f-9696-28beaa72e442/providers/Microsoft.Web/locations/northcentralus/managedApis/', parameters('connections_github_name'))]",
+                    "type": "Microsoft.Web/locations/managedApis"
+                },
+                "testLinks": []
+            }
+        },  
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_SEC598_Secrets_name')]",
+            "location": "northcentralus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', parameters('connections_azuresentinel_name'))]",
+                "[resourceId('Microsoft.Web/connections', parameters('connections_github_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Microsoft_Sentinel_incident": {
+                            "type": "ApiConnectionWebhook",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
+                                    }
+                                },
+                                "body": {
+                                    "callback_url": "@listCallbackUrl()"
+                                },
+                                "path": "/incident-creation"
+                            }
+                        }
+                    },
+                    "actions": {
+                        "For_each": {
+                            "foreach": "@triggerBody()?['object']?['properties']?['Alerts']",
+                            "actions": {
+                                "Parse_JSON": {
+                                    "type": "ParseJson",
+                                    "inputs": {
+                                        "content": "@items('For_each')?['properties']?['additionalData']?['Custom Details']",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "ApplicationName": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "TimeGenerated": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "ActivityDisplayName": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "Property": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "Create_an_issue": {
+                                    "runAfter": {
+                                        "Parse_JSON": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['github']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "body": {
+                                            "title": "Approval Request: @{body('Parse_JSON')?['ActivityDisplayName']} on @{body('Parse_JSON')?['TimeGenerated']}",
+                                            "body": "You received an approval request for @{body('Parse_JSON')?['ApplicationName']} on @{body('Parse_JSON')?['TimeGenerated']} \n<br /> \nFull details of the Alert below: \n<br /> \n@{body('Parse_JSON')?['Property']}\n<br />"
+                                        },
+                                        "path": "/repos/@{encodeURIComponent('Vjeroen')}/@{encodeURIComponent('secopsjeroenvdl')}/issues"
+                                    }
+                                },
+                                "Get_a_particular_issue_of_a_repository": {
+                                    "runAfter": {
+                                        "Create_an_issue": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['github']['connectionId']"
+                                            }
+                                        },
+                                        "method": "get",
+                                        "path": "/repos/@{encodeURIComponent('Vjeroen')}/@{encodeURIComponent('secopsjeroenvdl')}/issues/@{encodeURIComponent(body('Create_an_issue')?['number'])}"
+                                    }
+                                },
+                                "Condition": {
+                                    "actions": {
+                                        "Add_comment_to_incident_(V3)": {
+                                            "type": "ApiConnection",
+                                            "inputs": {
+                                                "host": {
+                                                    "connection": {
+                                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
+                                                    }
+                                                },
+                                                "method": "post",
+                                                "body": {
+                                                    "incidentArmId": "@triggerBody()?['object']?['id']",
+                                                    "message": "<p class=\"editor-paragraph\">The application @{body('Parse_JSON')?['ApplicationName']} is approved!</p>"
+                                                },
+                                                "path": "/Incidents/Comment"
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Get_a_particular_issue_of_a_repository": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "else": {
+                                        "actions": {
+                                            "Update_an_Issue": {
+                                                "type": "ApiConnection",
+                                                "inputs": {
+                                                    "host": {
+                                                        "connection": {
+                                                            "name": "@parameters('$connections')['github']['connectionId']"
+                                                        }
+                                                    },
+                                                    "method": "patch",
+                                                    "body": {
+                                                        "state": "Opem"
+                                                    },
+                                                    "path": "/repos/@{encodeURIComponent('Vjeroen')}/@{encodeURIComponent('jeroenvdlsecops')}/issues/@{encodeURIComponent(body('Get_a_particular_issue_of_a_repository')?['number'])}"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "equals": [
+                                                    "@body('Get_a_particular_issue_of_a_repository')?['state']",
+                                                    "open"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "type": "If"
+                                }
+                            },
+                            "runAfter": {},
+                            "type": "Foreach"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azuresentinel": {
+                                "id": "/subscriptions/89a595bf-0df1-4d5f-9696-28beaa72e442/providers/Microsoft.Web/locations/northcentralus/managedApis/azuresentinel",
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_azuresentinel_name'))]",
+                                "connectionName": "azuresentinel"
+                            },
+                            "github": {
+                                "id": "/subscriptions/89a595bf-0df1-4d5f-9696-28beaa72e442/providers/Microsoft.Web/locations/northcentralus/managedApis/github",
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_github_name'))]",
+                                "connectionName": "github"
+                            }
+                        }
+                    }
+                }
+            }
         },
-        "workspaceCapping": {
-          "dailyQuotaGb": -1
-        },
-        "publicNetworkAccessForIngestion": "Enabled",
-        "publicNetworkAccessForQuery": "Enabled"
-      }
-    },
-    {
-      "type": "Microsoft.OperationsManagement/solutions",
-      "apiVersion": "2015-11-01-preview",
-      "name": "[parameters('solutions_SecurityInsights_sec598_workspace_name')]",
-      "location": "[parameters('location')]",
-      "plan": {
-        "name": "SecurityInsights(sec598-workspace)",
-        "promotionCode": "",
-        "product": "OMSGallery/SecurityInsights",
-        "publisher": "Microsoft"
-      },
-      "properties": {
-        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaces_SEC598_Workspace_name'))]",
-        "containedResources": []
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaces_SEC598_Workspace_name'))]"
-      ]
-    }
-  ]
+        {
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "apiVersion": "2023-09-01",
+            "name": "[parameters('workspaces_SEC598_Wokspace_name')]",
+            "location": "eastus",
+            "properties": {
+                "sku": {
+                    "name": "pergb2018"
+                },
+                "retentionInDays": 30,
+                "features": {
+                    "legacy": 0,
+                    "searchVersion": 1,
+                    "enableLogAccessUsingOnlyResourcePermissions": true,
+                    "unifiedSentinelBillingOnly": true
+                },
+                "workspaceCapping": {
+                    "dailyQuotaGb": -1
+                },
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled"
+            }
+        }
+    ]
 }
