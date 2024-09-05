@@ -85,7 +85,7 @@
                     "description": "GitHub is a web-based Git repository hosting service. It offers all of the distributed revision control and source code management (SCM) functionality of Git as well as adding its own features.",
                     "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1704/1.0.1704.3827/', parameters('connections_github_name'), '/icon.png')]",
                     "brandColor": "#4078c0",
-                    "id": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'),', parameters('connections_github_name'))]",
+                    "id": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), parameters('connections_github_name'))]",
                     "type": "Microsoft.Web/locations/managedApis"
                 },
                 "testLinks": []
