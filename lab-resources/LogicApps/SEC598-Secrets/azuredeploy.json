@@ -32,7 +32,7 @@
             "location": "northcentralus",
             "kind": "V1",
             "properties": {
-                "displayName": "event-82690-2359195-sec598-labs-azure-of1d9@sansstudent0186bbc6817dd1.onmicrosoft.com",
+                "displayName": "sentinel connection",
                 "statuses": [
                     {
                         "status": "Connected"
@@ -40,8 +40,6 @@
                 ],
                 "customParameterValues": {},
                 "nonSecretParameterValues": {
-                    "token:tenantId": "9b39c242-61f3-436c-ba07-f6f89eb0c096",
-                    "token:grantType": "code"
                 },
                 "createdTime": "2024-08-27T18:55:37.9110471Z",
                 "changedTime": "2024-08-27T20:14:19.7763255Z",
@@ -51,7 +49,7 @@
                     "description": "Cloud-native SIEM with a built-in AI so you can focus on what matters most",
                     "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1702/1.0.1702.3810/', parameters('connections_azuresentinel_name'), '/icon.png')]",
                     "brandColor": "#0072C6",
-                    "id": "[concat('/subscriptions/89a595bf-0df1-4d5f-9696-28beaa72e442/providers/Microsoft.Web/locations/northcentralus/managedApis/', parameters('connections_azuresentinel_name'))]",
+                    "id": "[concat('/subscriptions/[subscription()]/providers/Microsoft.Web/locations/northcentralus/managedApis/', parameters('connections_azuresentinel_name'))]",
                     "type": "Microsoft.Web/locations/managedApis"
                 },
                 "testLinks": []
@@ -80,7 +78,7 @@
                     "description": "GitHub is a web-based Git repository hosting service. It offers all of the distributed revision control and source code management (SCM) functionality of Git as well as adding its own features.",
                     "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1704/1.0.1704.3827/', parameters('connections_github_name'), '/icon.png')]",
                     "brandColor": "#4078c0",
-                    "id": "[concat('/subscriptions/89a595bf-0df1-4d5f-9696-28beaa72e442/providers/Microsoft.Web/locations/northcentralus/managedApis/', parameters('connections_github_name'))]",
+                    "id": "[concat('/subscriptions/[subscription()]/providers/Microsoft.Web/locations/northcentralus/managedApis/', parameters('connections_github_name'))]",
                     "type": "Microsoft.Web/locations/managedApis"
                 },
                 "testLinks": []
