@@ -95,7 +95,7 @@
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "name": "[parameters('workflows_SEC598_Secrets_name')]",
-            "location": "northcentralus",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/connections', parameters('connections_azuresentinel_name'))]",
                 "[resourceId('Microsoft.Web/connections', parameters('connections_github_name'))]"
@@ -270,12 +270,12 @@
                     "$connections": {
                         "value": {
                             "azuresentinel": {
-                                "id": "/subscriptions/89a595bf-0df1-4d5f-9696-28beaa72e442/providers/Microsoft.Web/locations/northcentralus/managedApis/azuresentinel",
+                                "id": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), parameters('connections_azuresentinel_name'))]",
                                 "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_azuresentinel_name'))]",
                                 "connectionName": "azuresentinel"
                             },
                             "github": {
-                                "id": "/subscriptions/89a595bf-0df1-4d5f-9696-28beaa72e442/providers/Microsoft.Web/locations/northcentralus/managedApis/github",
+                                "id": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), parameters('connections_github_name'))]",
                                 "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_github_name'))]",
                                 "connectionName": "github"
                             }
