@@ -15,7 +15,7 @@
             "type": "String"
         },
         "workspaces_SEC598_Wokspace_name": {
-            "defaultValue": "SEC598-Wokspace",
+            "defaultValue": "SEC598-Workspace",
             "type": "String"
         },        
         "solutions_SecurityInsights_sec598_workspace__name": {
@@ -56,7 +56,7 @@
                     "description": "Cloud-native SIEM with a built-in AI so you can focus on what matters most",
                     "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1702/1.0.1702.3810/', parameters('connections_azuresentinel_name'), '/icon.png')]",
                     "brandColor": "#0072C6",
-                    "id": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), parameters('connections_azuresentinel_name'))]",
+                    "id": "[FId('Microsoft.Web/locations/managedApis', parameters('location'), parameters('connections_azuresentinel_name'))]",
                     "type": "Microsoft.Web/locations/managedApis"
                 },
                 "testLinks": []
