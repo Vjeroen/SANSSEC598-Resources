@@ -4,4 +4,4 @@
 https://www.one-tab.com/page/zEd7YOpeQ96odVQnRvLldg
 
 ## SEC598.2:  Security Automation Engineering
-https://www.one-tab.com/page/H0E2O1y2RmKYov1YutphRA
+https://www.one-tab.com/page/C5aJCVoXSR2T527CzGjsWA
