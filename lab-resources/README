@@ -1,4 +1,4 @@
-Section 1: Introduction to Infrastructure as Code (IaC)
+# Section 1: Introduction to Infrastructure as Code (IaC)
 
 In this lab series, we will leverage Infrastructure as Code (IaC) principles to automate the provisioning, configuration, and management of cloud infrastructure. By utilizing IaC tools such as Terraform, Ansible, and SOAR (Security Orchestration, Automation, and Response) platforms, we aim to achieve a highly efficient, scalable, and secure environment. The labs focus on designing infrastructure that is not only repeatable but also maintains a state-driven approach, ensuring consistency across multiple deployments. This automation minimizes manual intervention, enabling teams to deploy infrastructure in minutes and eliminate configuration drift.
 Section 2: Provisioning Infrastructure with Terraform
