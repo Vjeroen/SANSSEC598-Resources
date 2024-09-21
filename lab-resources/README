@@ -1,4 +1,4 @@
-# Section 1: Introduction to Infrastructure as Code (IaC)
+# Section 1: SEC598.1: Security Automation Concepts
 
 In this lab series, we will leverage Infrastructure as Code (IaC) principles to automate the provisioning, configuration, and management of cloud infrastructure. 
 By utilizing IaC tools such as Terraform, Ansible, and SOAR (Security Orchestration, Automation, and Response) platforms, we aim to achieve a highly efficient, 
@@ -6,7 +6,7 @@ scalable, and secure environment. The labs focus on designing infrastructure tha
 consistency across multiple deployments. This automation minimizes manual intervention, enabling teams to deploy infrastructure in minutes and eliminate configuration
 drift.
 
-# Section 2: Provisioning Infrastructure with Terraform
+# Section 2: SEC598.2: Security Automation Engineering
 
 Terraform will be used as the primary tool for provisioning and managing cloud resources. We will explore creating and managing cloud infrastructure across 
 multiple providers, such as AWS, Azure, and GCP. Each lab will include Terraform modules to provision compute resources (EC2, Azure VMs, GCP instances), 
@@ -16,7 +16,7 @@ In the initial labs, we will focus on setting up a modular architecture where Te
 to leverage Terraform state files and remote backends, using providers such as AWS S3 and Azure Blob Storage for shared state management. We will implement 
 secure methods for storing sensitive data using HashiCorp Vault integration with Terraform, ensuring secure credentials and API keys in production.
 
-# Section 3: Configuration Management with Ansible
+# Section 3: SEC598.3: Security Automation in the Cloud
 
 Once the infrastructure is provisioned, Ansible will be employed to configure the underlying operating systems and deploy application-specific configurations. 
 We will utilize Ansible playbooks and roles to automate system updates, software installations, and security configurations. These labs will introduce concepts 
@@ -26,7 +26,7 @@ You will learn to manage infrastructure at scale using Ansible’s dynamic inven
 configure new nodes. Advanced topics will include using Ansible Tower to create workflows for multi-step automation, enhancing scalability, visibility, and 
 security in DevOps environments.
 
-# Section 4: SOAR Integration for Security Automation
+# Section 4: SEC598.4: Offensive Security Automation
 
 Security automation plays a crucial role in our DevOps pipeline. We will use SOAR tools to detect and respond to security incidents within cloud environments. 
 This includes using Terraform to provision cloud-native security services such as AWS CloudWatch, Azure Sentinel, and GCP Security Command Center. SOAR tools 
@@ -48,7 +48,7 @@ jeroen.vandeleur@nviso.eu
 We will also set up security playbooks in SOAR that integrate with Ansible to trigger automated remediation tasks such as disabling compromised user accounts, 
 applying firewall rules, or quarantining malicious endpoints.
 
-# Section 5: General Automation and CI/CD Pipelines
+# Section 5: SEC598.5: Defensive Security Automatoin
 
 A key component of this lab series is the integration of all tools into a Continuous Integration/Continuous Delivery (CI/CD) pipeline. Jenkins or GitLab CI 
 will be used to automate the end-to-end deployment of infrastructure and applications. This pipeline will integrate with version control systems to trigger 
