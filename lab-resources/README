@@ -1,17 +1,37 @@
 # Section 1: Introduction to Infrastructure as Code (IaC)
 
-In this lab series, we will leverage Infrastructure as Code (IaC) principles to automate the provisioning, configuration, and management of cloud infrastructure. By utilizing IaC tools such as Terraform, Ansible, and SOAR (Security Orchestration, Automation, and Response) platforms, we aim to achieve a highly efficient, scalable, and secure environment. The labs focus on designing infrastructure that is not only repeatable but also maintains a state-driven approach, ensuring consistency across multiple deployments. This automation minimizes manual intervention, enabling teams to deploy infrastructure in minutes and eliminate configuration drift.
-Section 2: Provisioning Infrastructure with Terraform
+In this lab series, we will leverage Infrastructure as Code (IaC) principles to automate the provisioning, configuration, and management of cloud infrastructure. 
+By utilizing IaC tools such as Terraform, Ansible, and SOAR (Security Orchestration, Automation, and Response) platforms, we aim to achieve a highly efficient, 
+scalable, and secure environment. The labs focus on designing infrastructure that is not only repeatable but also maintains a state-driven approach, ensuring 
+consistency across multiple deployments. This automation minimizes manual intervention, enabling teams to deploy infrastructure in minutes and eliminate configuration
+drift.
 
-Terraform will be used as the primary tool for provisioning and managing cloud resources. We will explore creating and managing cloud infrastructure across multiple providers, such as AWS, Azure, and GCP. Each lab will include Terraform modules to provision compute resources (EC2, Azure VMs, GCP instances), networking components (VPCs, subnets, security groups), storage services (S3, Azure Storage), and identity management (IAM).
+# Section 2: Provisioning Infrastructure with Terraform
 
-In the initial labs, we will focus on setting up a modular architecture where Terraform modules can be reused across environments. You will also learn how to leverage Terraform state files and remote backends, using providers such as AWS S3 and Azure Blob Storage for shared state management. We will implement secure methods for storing sensitive data using HashiCorp Vault integration with Terraform, ensuring secure credentials and API keys in production.
-Section 3: Configuration Management with Ansible
+Terraform will be used as the primary tool for provisioning and managing cloud resources. We will explore creating and managing cloud infrastructure across 
+multiple providers, such as AWS, Azure, and GCP. Each lab will include Terraform modules to provision compute resources (EC2, Azure VMs, GCP instances), 
+networking components (VPCs, subnets, security groups), storage services (S3, Azure Storage), and identity management (IAM).
 
-Once the infrastructure is provisioned, Ansible will be employed to configure the underlying operating systems and deploy application-specific configurations. We will utilize Ansible playbooks and roles to automate system updates, software installations, and security configurations. These labs will introduce concepts such as idempotency in Ansible, ensuring that repeated playbook runs do not alter the desired system state unnecessarily.
+In the initial labs, we will focus on setting up a modular architecture where Terraform modules can be reused across environments. You will also learn how 
+to leverage Terraform state files and remote backends, using providers such as AWS S3 and Azure Blob Storage for shared state management. We will implement 
+secure methods for storing sensitive data using HashiCorp Vault integration with Terraform, ensuring secure credentials and API keys in production.
 
-You will learn to manage infrastructure at scale using Ansible’s dynamic inventory capabilities, integrating with cloud APIs to automatically detect and configure new nodes. Advanced topics will include using Ansible Tower to create workflows for multi-step automation, enhancing scalability, visibility, and security in DevOps environments.
-Section 4: SOAR Integration for Security Automation
+# Section 3: Configuration Management with Ansible
+
+Once the infrastructure is provisioned, Ansible will be employed to configure the underlying operating systems and deploy application-specific configurations. 
+We will utilize Ansible playbooks and roles to automate system updates, software installations, and security configurations. These labs will introduce concepts 
+such as idempotency in Ansible, ensuring that repeated playbook runs do not alter the desired system state unnecessarily.
+
+You will learn to manage infrastructure at scale using Ansible’s dynamic inventory capabilities, integrating with cloud APIs to automatically detect and 
+configure new nodes. Advanced topics will include using Ansible Tower to create workflows for multi-step automation, enhancing scalability, visibility, and 
+security in DevOps environments.
+
+# Section 4: SOAR Integration for Security Automation
+
+Security automation plays a crucial role in our DevOps pipeline. We will use SOAR tools to detect and respond to security incidents within cloud environments. 
+This includes using Terraform to provision cloud-native security services such as AWS CloudWatch, Azure Sentinel, and GCP Security Command Center. SOAR tools 
+will automate threat detection, correlation, and incident response. For instance, AWS Lambda functions, triggered by CloudWatch Events, will remediate security 
+vulnerabilities in real-time by modifying misconfigured IAM roles or patching vulnerable instances.
 
 Note for winning a coin in the capstone:  For OnDemand students only, if you wish to earn a challenge coin, follow these steps:
 Summary:  Create an automation that is useful to you personally or that you can use for your company and submit it to the course authors.  If we evaluate it as worthy, we will award you with a SEC598 coin.  Steps:
@@ -22,9 +42,13 @@ Summary:  Create an automation that is useful to you personally or that you can 
 jostrom@stora.io
 jeroen.vandeleur@nviso.eu
 
-Security automation plays a crucial role in our DevOps pipeline. We will use SOAR tools to detect and respond to security incidents within cloud environments. This includes using Terraform to provision cloud-native security services such as AWS CloudWatch, Azure Sentinel, and GCP Security Command Center. SOAR tools will automate threat detection, correlation, and incident response. For instance, AWS Lambda functions, triggered by CloudWatch Events, will remediate security vulnerabilities in real-time by modifying misconfigured IAM roles or patching vulnerable instances.
+We will also set up security playbooks in SOAR that integrate with Ansible to trigger automated remediation tasks such as disabling compromised user accounts, 
+applying firewall rules, or quarantining malicious endpoints.
 
-We will also set up security playbooks in SOAR that integrate with Ansible to trigger automated remediation tasks such as disabling compromised user accounts, applying firewall rules, or quarantining malicious endpoints.
-Section 5: General Automation and CI/CD Pipelines
+# Section 5: General Automation and CI/CD Pipelines
 
-A key component of this lab series is the integration of all tools into a Continuous Integration/Continuous Delivery (CI/CD) pipeline. Jenkins or GitLab CI will be used to automate the end-to-end deployment of infrastructure and applications. This pipeline will integrate with version control systems to trigger Terraform and Ansible deployments based on code changes. We will enforce testing and validation, such as infrastructure linting and Ansible syntax checks, to ensure stability in production deployments. The labs will conclude with an automated rollback mechanism that leverages Terraform’s state management and Ansible’s failure detection, ensuring resilient and reliable automation workflows.
+A key component of this lab series is the integration of all tools into a Continuous Integration/Continuous Delivery (CI/CD) pipeline. Jenkins or GitLab CI 
+will be used to automate the end-to-end deployment of infrastructure and applications. This pipeline will integrate with version control systems to trigger 
+Terraform and Ansible deployments based on code changes. We will enforce testing and validation, such as infrastructure linting and Ansible syntax checks, to 
+ensure stability in production deployments. The labs will conclude with an automated rollback mechanism that leverages Terraform’s state management and Ansible’s 
+failure detection, ensuring resilient and reliable automation workflows.
