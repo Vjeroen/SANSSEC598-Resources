@@ -1,10 +1,10 @@
 {
-  "schema_version": 18,
-  "standard_lib_version": 54,
-  "action_runtime_version": 10,
+  "schema_version": 21,
+  "standard_lib_version": 59,
+  "action_runtime_version": 13,
   "name": "SANS LAB 5.4 - Emulation vs Detection Story",
   "description": null,
-  "guid": "3c9fef2b1e4d12fd12335ccb6cb14b66",
+  "guid": "60e2aff018e50af06581b8090ffced5f",
   "slug": "sans_lab_5_4_emulation_vs_detection_story",
   "agents": [
     {
@@ -12,11 +12,11 @@
       "name": "Detections Webhook Action",
       "disabled": false,
       "description": null,
-      "guid": "d184a0b206211f80fedc52ecf4a0e5df",
+      "guid": "c171aa6c1363bfd4a30bbdbe9eb9926f",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
-        "path": "7a22a62e8b6b174e7f5a639280fef2af",
-        "secret": "7527f7c82afdc378208dc977aa0cdc44",
+        "path": "b4d62f24e8bd82524ca181c6b4c64799",
+        "secret": "16df3674d149abbd0e565c90b803e6ed",
         "verbs": "get,post"
       },
       "reporting": {
@@ -40,7 +40,7 @@
       "name": "Validate tags and host",
       "disabled": false,
       "description": null,
-      "guid": "dd6815db010cc78a3af88bb80763cdfc",
+      "guid": "8734aac10416ae959ca6d25d0050531b",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "rules": [
@@ -76,7 +76,7 @@
       "name": "Capture Record",
       "disabled": false,
       "description": null,
-      "guid": "abd925bdb3d26ae3287963c1dc9f241d",
+      "guid": "766235478936a462ded70eda704232bb",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "parent": "",
@@ -102,7 +102,7 @@
           "formula": "<<META.story.name>>",
           "include_in_update": false,
           "record_field": {
-            "id": 958,
+            "id": 40299,
             "name": "Story name",
             "result_type": "TEXT",
             "fixed_values": []
@@ -112,7 +112,7 @@
           "formula": "<<DATE(\"now\", \"%Y-%m-%d %H:%M:%S\")>>",
           "include_in_update": false,
           "record_field": {
-            "id": 959,
+            "id": 40300,
             "name": "Timestamp",
             "result_type": "TIMESTAMP",
             "fixed_values": []
@@ -122,7 +122,7 @@
           "formula": "<<detections_webhook_action.body.cat>>",
           "include_in_update": false,
           "record_field": {
-            "id": 960,
+            "id": 40301,
             "name": "Detection Title",
             "result_type": "TEXT",
             "fixed_values": []
@@ -132,7 +132,7 @@
           "formula": "<<detections_webhook_action.body.detect_mtd.level>>",
           "include_in_update": false,
           "record_field": {
-            "id": 961,
+            "id": 40302,
             "name": "Level",
             "result_type": "TEXT",
             "fixed_values": []
@@ -142,7 +142,7 @@
           "formula": "<<detections_webhook_action.body.detect_mtd.description>>",
           "include_in_update": false,
           "record_field": {
-            "id": 962,
+            "id": 40303,
             "name": "Description Rule",
             "result_type": "TEXT",
             "fixed_values": []
@@ -152,7 +152,7 @@
           "formula": "<<detections_webhook_action.body.detect.event.COMMAND_LINE>>",
           "include_in_update": false,
           "record_field": {
-            "id": 963,
+            "id": 40304,
             "name": "Command",
             "result_type": "TEXT",
             "fixed_values": []
@@ -162,7 +162,7 @@
           "formula": "<<detections_webhook_action.body.detect.routing.event_type>>",
           "include_in_update": false,
           "record_field": {
-            "id": 964,
+            "id": 40305,
             "name": "Event Type",
             "result_type": "TEXT",
             "fixed_values": []
@@ -172,7 +172,7 @@
           "formula": "<<detections_webhook_action.body.detect.routing.int_ip>>",
           "include_in_update": false,
           "record_field": {
-            "id": 965,
+            "id": 40306,
             "name": "Device IP",
             "result_type": "TEXT",
             "fixed_values": []
@@ -182,7 +182,7 @@
           "formula": "<<JSONPATH(detections_webhook_action.body.detect_mtd.tags,\"[0]\")>>",
           "include_in_update": false,
           "record_field": {
-            "id": 966,
+            "id": 40307,
             "name": "MITRE Tactic",
             "result_type": "TEXT",
             "fixed_values": []
@@ -192,7 +192,7 @@
           "formula": "<<JSONPATH(detections_webhook_action.body.detect_mtd.tags,\"[1]\")>>",
           "include_in_update": false,
           "record_field": {
-            "id": 967,
+            "id": 40308,
             "name": "MITRE Techniques",
             "result_type": "TEXT",
             "fixed_values": []
@@ -202,7 +202,7 @@
           "formula": "<<DATE_PARSE(detections_webhook_action.body.gen_time).iso8601_milliseconds>>",
           "include_in_update": false,
           "record_field": {
-            "id": 968,
+            "id": 40309,
             "name": "Generate Time",
             "result_type": "TEXT",
             "fixed_values": []
@@ -212,7 +212,7 @@
           "formula": "<<detections_webhook_action.body.detect.event.PARENT.USER_NAME>>",
           "include_in_update": false,
           "record_field": {
-            "id": 969,
+            "id": 40310,
             "name": "User",
             "result_type": "TEXT",
             "fixed_values": []
@@ -221,78 +221,78 @@
       ],
       "schedule": null,
       "record_type": {
-        "id": 256,
+        "id": 15874,
         "name": "Detected Alerts",
         "editable": true,
         "record_fields": [
           {
-            "id": 958,
+            "id": 40299,
             "name": "Story name",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 959,
+            "id": 40300,
             "name": "Timestamp",
             "result_type": "TIMESTAMP",
             "fixed_values": []
           },
           {
-            "id": 960,
+            "id": 40301,
             "name": "Detection Title",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 961,
+            "id": 40302,
             "name": "Level",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 962,
+            "id": 40303,
             "name": "Description Rule",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 963,
+            "id": 40304,
             "name": "Command",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 964,
+            "id": 40305,
             "name": "Event Type",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 965,
+            "id": 40306,
             "name": "Device IP",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 966,
+            "id": 40307,
             "name": "MITRE Tactic",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 967,
+            "id": 40308,
             "name": "MITRE Techniques",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 968,
+            "id": 40309,
             "name": "Generate Time",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 969,
+            "id": 40310,
             "name": "User",
             "result_type": "TEXT",
             "fixed_values": []
@@ -305,7 +305,7 @@
       "name": "List records with a filter",
       "disabled": false,
       "description": "Retrieve a list of record results.\n\nLink to documentation: https://www.tines.com/api/records/list",
-      "guid": "2c9b99bc2e519890ef297b8b8853c5a1",
+      "guid": "acdcbe52cda54649134775bd135c0cd7",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "https://<<INPUT.tenant_domain>>/api/v1/records",
@@ -354,14 +354,14 @@
       "name": "Transform detections to table",
       "disabled": false,
       "description": null,
-      "guid": "6d94bea7553dbc67fd249d0a02df5746",
+      "guid": "da66aad89a664c07d65afa6eb89b1e46",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
-        "input": "=list_records_with_a_filter.body.record_results",
+        "input": "=merge_results.results_array",
         "guidance": "Create a nice formatted table for Github with all different items in record results. Format the table so each event is another entry in a tabel with all the columns from the input. Also add an additional array to collect all the attack techniques with their value range from, strip the attack. pre- fix, so focus and only give output via  regex pattern for this range of values t0000-t9999 everything behind the point you can ignore for that value ",
         "language": "Python",
-        "script": "import re\n\ndef main(input):\n    table = []\n    attack_techniques = []\n\n    for event in input:\n        row = {\n            \"Story name\": event.get(\"Story name\"),\n            \"Timestamp\": event.get(\"Timestamp\"),\n            \"Detection Title\": event.get(\"Detection Title\"),\n            \"Level\": event.get(\"Level\"),\n            \"Description Rule\": event.get(\"Description Rule\"),\n            \"Command\": event.get(\"Command\"),\n            \"Event Type\": event.get(\"Event Type\"),\n            \"Device IP\": event.get(\"Device IP\"),\n            \"MITRE Tactic\": event.get(\"MITRE Tactic\"),\n            \"MITRE Techniques\": event.get(\"MITRE Techniques\"),\n            \"Generate Time\": event.get(\"Generate Time\"),\n            \"User\": event.get(\"User\"),\n            \"id\": event.get(\"id\")\n        }\n        table.append(row)\n\n        techniques = event.get(\"MITRE Techniques\")\n        if techniques:\n            for technique in re.findall(r'attack\\.t\\d{4}', techniques):\n                attack_techniques.append(technique.replace(\"attack.\", \"\"))\n\n    return {\n        \"table\": table,\n        \"attack_techniques\": list(set(attack_techniques))\n    }"
+        "script": "import re\n\ndef main(input):\n    table = []\n    attack_techniques = []\n\n    for event in input:\n        row = {\n            \"Story name\": event.get(\"Story name\"),\n            \"Timestamp\": event.get(\"Timestamp\"),\n            \"Detection Title\": event.get(\"Detection Title\"),\n            \"Level\": event.get(\"Level\"),\n            \"Description Rule\": event.get(\"Description Rule\"),\n            \"Command\": event.get(\"Command\"),\n            \"Event Type\": event.get(\"Event Type\"),\n            \"Device IP\": event.get(\"Device IP\"),\n            \"MITRE Tactic\": event.get(\"MITRE Tactic\"),\n            \"MITRE Techniques\": event.get(\"MITRE Techniques\")\n        }\n        table.append(row)\n\n        techniques = event.get(\"MITRE Techniques\")\n        if techniques:\n            for technique in re.findall(r\"attack\\.t\\d{4}\", techniques):\n                attack_techniques.append(technique.replace(\"attack.\", \"\"))\n\n    return {\n        \"table\": table,\n        \"attack_techniques\": list(set(attack_techniques))\n    }"
       },
       "reporting": {
         "time_saved_value": 0,
@@ -385,7 +385,7 @@
       "name": "Create Adversary Emulation Case",
       "disabled": false,
       "description": null,
-      "guid": "b9cf8a417e83d6b2939f0732875be4fc",
+      "guid": "fcab6c3f7d2e699f8d1b1d31641cdb07",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "case_details": "{\"case_description\":\"\\n# Techniques executed\\n\\n<<transform_to_table.output>>\\n\\n\",\"case_name\":\"SEC598:Adversary Emulation:<<lab_5_4_adv_emulation_page.body.emulation_plan_name>>\"}"
@@ -412,7 +412,7 @@
       "name": "Create Adversary Profile",
       "disabled": false,
       "description": null,
-      "guid": "7a8477649847f8fbd5f7b67abc858aa5",
+      "guid": "0f864779df931d3a7e797aaa069eda47",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "http://<<RESOURCE.caldera_domain>>/api/v2/adversaries",
@@ -468,7 +468,7 @@
       "name": "HTTP Request Action - Create Adversary Profile",
       "disabled": false,
       "description": null,
-      "guid": "a59e2d272cb7cdb2c6265be1860b40ef",
+      "guid": "4216509117effce3c5bbae2f99315eec",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "http://<<RESOURCE.caldera_domain>>/api/v2/abilities",
@@ -501,7 +501,7 @@
       "name": "Event Transform Action",
       "disabled": false,
       "description": null,
-      "guid": "2f9aef01d58ef3618a6b20565de7d6e8",
+      "guid": "eff2c5706ad3a14652c8c8990bf3fdc8",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
@@ -532,7 +532,7 @@
       "name": "Lab 5.4 Adv. Emulation Page",
       "disabled": false,
       "description": null,
-      "guid": "f799cc9f14a1be3a32b9a77df3d0096e",
+      "guid": "c6ebdad68b10beb6011f0e10ee143d1e",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "fields": "",
@@ -551,7 +551,7 @@
         "pages_action_color": "#d10000",
         "pages_appearance_mode": "dark",
         "pages_background_color": "#F9F9F9",
-        "url_identifier": "50e5fa10eb76a1d5721f14ec79e6196a"
+        "url_identifier": "6d42825ba0d3d1908f598f287ccbf3d9"
       },
       "reporting": {
         "time_saved_value": 0,
@@ -574,14 +574,14 @@
       "name": "Create Operation",
       "disabled": false,
       "description": null,
-      "guid": "3ef555cb2587e3e2addf4160f57acebd",
+      "guid": "e5aaf4b3a3234b384f2523bef48c055c",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "http://<<RESOURCE.caldera_domain>>/api/v2/operations",
         "method": "post",
         "payload": {
           "id": "Purple team run:<<NOW()>>",
-          "name": " Puprle team run: <<NOW()\n>>",
+          "name": " Puprle team run: <<NOW()>>",
           "adversary": {
             "adversary_id": "<<create_adversary_profile.body.adversary_id>>",
             "name": "<<create_adversary_profile.body.name>>",
@@ -620,7 +620,7 @@
       "name": "Explode Abilities",
       "disabled": false,
       "description": null,
-      "guid": "bf5e9429a20d80bd4ce76abb28771d9b",
+      "guid": "20f84a69292141ff3e52f0fb370ff090",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "explode",
@@ -650,7 +650,7 @@
       "name": "Get ability details",
       "disabled": false,
       "description": null,
-      "guid": "ddeca77f6cf7166a9ecdbf416ef49d23",
+      "guid": "f6c4ee8bb627e647d3398347c0c7a9bd",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "http://<<RESOURCE.caldera_domain>>/api/v2/abilities/<<explode_abilities.ability>>",
@@ -682,7 +682,7 @@
       "name": "Implode abilities",
       "disabled": false,
       "description": null,
-      "guid": "5e0d277d0ad99f202b22dbc597e7329a",
+      "guid": "e2350ac2db00424bf230179d02e80f58",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "implode",
@@ -712,7 +712,7 @@
       "name": "Transform to table",
       "disabled": false,
       "description": null,
-      "guid": "afc33998bf25ff39851b37bb74e6d0eb",
+      "guid": "3448dd5283fe2839e5055ed3b2949b15",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
@@ -743,7 +743,7 @@
       "name": "Wait for operation",
       "disabled": false,
       "description": "Wait 10 minutes before we have all the alerts",
-      "guid": "7f8471ce9e15adc84c09ecd327f445c1",
+      "guid": "a8866a13e7b06f570444c4316ac4c990",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "delay",
@@ -770,7 +770,7 @@
       "name": "Transform to Markdown",
       "disabled": false,
       "description": null,
-      "guid": "b7a8f26dee573918623e2b1aeabdb252",
+      "guid": "dee8e983846382ec2970f5d84448d613",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
@@ -801,7 +801,7 @@
       "name": "Update a case",
       "disabled": false,
       "description": "Update a case in Tines.\n\nLink to documentation: https://www.tines.com/api/cases/update",
-      "guid": "187e251ae41f95b587e7323b665f7424",
+      "guid": "973a479e0500973c81f384c1c94151e1",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "https://<<INPUT.tenant_domain>>/api/v2/cases/<<INPUT.case_id>>",
@@ -852,14 +852,233 @@
       "name": "Build Results",
       "disabled": false,
       "description": null,
-      "guid": "c3bc0c676cb19c970d8480a3130d0c84",
+      "guid": "6454087271e9581388a10854a4a7b0ed",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "message_only",
         "loop": false,
         "payload": {
-          "techniques": "<<get_details_abilities.output>>",
-          "detections": "<<transform_detections_to_table.output.attack_techniques>>"
+          "techniques": "=get_details_abilities.output",
+          "detections": "=transform_detections_to_table.output.attack_techniques"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Transform vs table to Markdown",
+      "disabled": false,
+      "description": null,
+      "guid": "9105f3a0ee56bd1c580ba150855d2399",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "automatic",
+        "input": "=compare_techniques_with_detections.output.detected",
+        "guidance": "Transform the  input into a markdown table with title technique ID and technique name. If it is a null, then output \\\"detected is none\\\".\n",
+        "language": "Python",
+        "script": "def main(input):\n    table = []\n    for item in input:\n        technique_id = item.get('technique_id')\n        name = item.get('name')\n        if technique_id is None or name is None:\n            table.append(['detected is none', 'detected is none'])\n        else:\n            table.append([technique_id, name])\n    \n    return '| Technique ID | Technique Name |\\n|--------------|---------------|\\n' + '\\n'.join(f'| {id_} | {name} |' for id_, name in table)"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Transform undetected table to Markdown",
+      "disabled": false,
+      "description": null,
+      "guid": "a4e03a842a48a61e6bcbf7a69ac488bb",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "mode": "automatic",
+        "input": "=compare_techniques_with_detections.output.undetected",
+        "guidance": "Transform the  input into a markdown table with title technique ID and technique name\n",
+        "language": "Python",
+        "script": "def main(input):\n    table = []\n    for item in input:\n        technique_id = item.get('technique_id')\n        name = item.get('name')\n        table.append([technique_id, name])\n\n    header = '| Technique ID | Technique Name |'\n    divider = '|:-------------|:--------------|'\n    rows = ['|{}|{}|'.format(tid, name) for tid, name in table]\n    return '\\n'.join([header, divider] + rows)"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::RunScriptAgent",
+      "name": "Get details abilities",
+      "disabled": false,
+      "description": null,
+      "guid": "f9097cfd5389ef73c7092ccb20aaa009",
+      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
+      "options": {
+        "language": "Python",
+        "timeout": 10,
+        "script": "def main(input):\n    output = []\n    for entry in input:\n        output.append({\n            \"technique_id\": entry.get(\"technique_id\"),\n            \"name\": entry.get(\"name\")\n        })\n    return output",
+        "input": "=implode_abilities"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "List Records with a Filter",
+      "disabled": false,
+      "description": null,
+      "guid": "5b555addfc894d50dc39384f8eba19ab",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
+      "options": {
+        "url": "<<list_records_with_a_filter.body.meta.next_page>>",
+        "content_type": "application_json",
+        "method": "get",
+        "headers": {
+          "Authorization": "Bearer <<CREDENTIAL.sec598_tines_credentials>>",
+          "User-Agent": "Tines"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "If has_more",
+      "disabled": false,
+      "description": "",
+      "guid": "c2b18c7e7023bc776677736270e05d03",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
+      "options": {
+        "rules": [
+          {
+            "path": "<<list_records_with_a_filter.body.meta.next_page>>",
+            "type": "regex",
+            "value": ".+"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "If not has_more",
+      "disabled": false,
+      "description": null,
+      "guid": "7c48e9b5297e0023aa061d1b4007e6a9",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
+      "options": {
+        "rules": [
+          {
+            "path": "<<list_records_with_a_filter.body.meta.next_page>>",
+            "type": "!regex",
+            "value": ".+"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Merge Results",
+      "disabled": false,
+      "description": null,
+      "guid": "7ba33f48ba7f3c281d4e998afea41385",
+      "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
+      "options": {
+        "mode": "message_only",
+        "payload": {
+          "results_array": "=CONCAT(FLATTEN(merge_results.results_array), list_records_with_a_filter.body.record_results)"
         }
       },
       "reporting": {
@@ -884,165 +1103,13 @@
       "name": "Compare techniques with detections",
       "disabled": false,
       "description": null,
-      "guid": "a32b3624674b1bcc53f634727f757050",
+      "guid": "0d591dbc096e61731959a35f26e15e4f",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "language": "Python",
         "timeout": 10,
-        "script": "def main(input):\n    techniques = input.get('techniques')\n    detections = input.get('detections')\n\n    if techniques is None or detections is None:\n        return []\n\n    # Parse techniques\n    technique_list = []\n    for item in eval(techniques):\n        if isinstance(item, list) and len(item) == 2:\n            technique_id, technique_name = item\n            technique_list.append((technique_id, technique_name))\n\n    # Parse detections\n    detection_list = [detection.replace('attack.', '').upper() for detection in eval(detections)]\n\n    # Compare techniques and detections\n    detected_techniques = []\n    undetected_techniques = []\n    for technique_id, technique_name in technique_list:\n        if any(technique_id.startswith(det) for det in detection_list):\n            detected_techniques.append((technique_id, technique_name))\n        else:\n            undetected_techniques.append((technique_id, technique_name))\n\n    return {\n        \"detected_techniques\": detected_techniques,\n        \"undetected_techniques\": undetected_techniques\n    }",
+        "script": "def main(input):\n    detected = []\n    undetected = []\n    \n    for technique in input.get('techniques', []):\n        technique_id = technique.get('technique_id')\n        name = technique.get('name')\n        \n        if any(detection.lower() == technique_id.lower() for detection in input.get('detections', [])):\n            detected.append({'name': name, 'technique_id': technique_id})\n        else:\n            undetected.append({'name': name, 'technique_id': technique_id})\n    \n    result = {}\n    if detected:\n        result['detected'] = detected\n    if undetected:\n        result['undetected'] = undetected\n    \n    return result",
         "input": "=build_results"
-      },
-      "reporting": {
-        "time_saved_value": 0,
-        "time_saved_unit": "minutes"
-      },
-      "monitoring": {
-        "monitor_all_events": false,
-        "monitor_failures": false,
-        "monitor_no_events_emitted": null
-      },
-      "template": {
-        "created_from_template_guid": null,
-        "created_from_template_version": null,
-        "template_tags": []
-      },
-      "width": null,
-      "schedule": null
-    },
-    {
-      "type": "Agents::RunScriptAgent",
-      "name": "Compare techniques with detections",
-      "disabled": false,
-      "description": null,
-      "guid": "32b4cf9b0a5a9fc639e29231c83f1ebf",
-      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
-      "options": {
-        "language": "Python",
-        "timeout": 10,
-        "script": "def main(input):\n    techniques = input.get('techniques')\n    detections = input.get('detections')\n\n    if techniques is None or detections is None:\n        return []\n\n    # Parse techniques\n    technique_list = []\n    for item in eval(techniques):\n        if isinstance(item, list) and len(item) == 2:\n            technique_id, technique_name = item\n            technique_list.append((technique_id, technique_name))\n\n    # Parse detections\n    detection_list = [detection.replace('attack.', '').upper() for detection in eval(detections)]\n\n    # Compare techniques and detections\n    detected_techniques = []\n    undetected_techniques = []\n    for technique_id, technique_name in technique_list:\n        if any(technique_id.startswith(det) for det in detection_list):\n            detected_techniques.append((technique_id, technique_name))\n        else:\n            undetected_techniques.append((technique_id, technique_name))\n\n    return {\n        \"detected_techniques\": detected_techniques,\n        \"undetected_techniques\": undetected_techniques\n    }",
-        "input": "=build_results"
-      },
-      "reporting": {
-        "time_saved_value": 0,
-        "time_saved_unit": "minutes"
-      },
-      "monitoring": {
-        "monitor_all_events": false,
-        "monitor_failures": false,
-        "monitor_no_events_emitted": null
-      },
-      "template": {
-        "created_from_template_guid": null,
-        "created_from_template_version": null,
-        "template_tags": []
-      },
-      "width": null,
-      "schedule": null
-    },
-    {
-      "type": "Agents::RunScriptAgent",
-      "name": "Compare techniques with detections",
-      "disabled": false,
-      "description": null,
-      "guid": "7c8ec4d48292924cb5734a402213a777",
-      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
-      "options": {
-        "language": "Python",
-        "timeout": 10,
-        "script": "def main(input):\n    techniques = input.get('techniques')\n    detections = input.get('detections')\n\n    if techniques is None or detections is None:\n        return []\n\n    # Parse techniques\n    technique_list = []\n    for item in eval(techniques):\n        if isinstance(item, list) and len(item) == 2:\n            technique_id, technique_name = item\n            technique_list.append((technique_id, technique_name))\n\n    # Parse detections\n    detection_list = [detection.replace('attack.', '').upper() for detection in eval(detections)]\n\n    # Compare techniques and detections\n    detected_techniques = []\n    undetected_techniques = []\n    for technique_id, technique_name in technique_list:\n        if any(technique_id.startswith(det) for det in detection_list):\n            detected_techniques.append((technique_id, technique_name))\n        else:\n            undetected_techniques.append((technique_id, technique_name))\n\n    return {\n        \"detected_techniques\": detected_techniques,\n        \"undetected_techniques\": undetected_techniques\n    }",
-        "input": "=build_results"
-      },
-      "reporting": {
-        "time_saved_value": 0,
-        "time_saved_unit": "minutes"
-      },
-      "monitoring": {
-        "monitor_all_events": false,
-        "monitor_failures": false,
-        "monitor_no_events_emitted": null
-      },
-      "template": {
-        "created_from_template_guid": null,
-        "created_from_template_version": null,
-        "template_tags": []
-      },
-      "width": null,
-      "schedule": null
-    },
-    {
-      "type": "Agents::EventTransformationAgent",
-      "name": "Transform vs table to Markdown",
-      "disabled": false,
-      "description": null,
-      "guid": "c3be97b98f0d879aa9df233d148b1d4e",
-      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
-      "options": {
-        "mode": "automatic",
-        "input": "=compare_techniques_with_detections.output.detected_techniques",
-        "guidance": "Transform the  input into a markdown table with title technique ID and technique name\n",
-        "language": "Python",
-        "script": "def main(input):\n    table = []\n    for row in input:\n        table.append(f\"| {row[0]} | {row[1]} |\")\n    return \"\\n\".join([\"| Technique ID | Technique Name |\", \"| --- | --- |\"] + table)"
-      },
-      "reporting": {
-        "time_saved_value": 0,
-        "time_saved_unit": "minutes"
-      },
-      "monitoring": {
-        "monitor_all_events": false,
-        "monitor_failures": false,
-        "monitor_no_events_emitted": null
-      },
-      "template": {
-        "created_from_template_guid": null,
-        "created_from_template_version": null,
-        "template_tags": []
-      },
-      "width": null,
-      "schedule": null
-    },
-    {
-      "type": "Agents::EventTransformationAgent",
-      "name": "Transform undetected table to Markdown",
-      "disabled": false,
-      "description": null,
-      "guid": "f5460b8b84274b0eab1ea39a291474ac",
-      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
-      "options": {
-        "mode": "automatic",
-        "input": "=compare_techniques_with_detections.output.undetected_techniques",
-        "guidance": "Transform the  input into a markdown table with title technique ID and technique name\n",
-        "language": "Python",
-        "script": "def main(input):\n    table = []\n    for row in input:\n        table.append(f\"| {row[0]} | {row[1]} |\")\n    return \"\\n\".join([\"| Technique ID | Technique Name |\", \"| --- | --- |\"] + table)"
-      },
-      "reporting": {
-        "time_saved_value": 0,
-        "time_saved_unit": "minutes"
-      },
-      "monitoring": {
-        "monitor_all_events": false,
-        "monitor_failures": false,
-        "monitor_no_events_emitted": null
-      },
-      "template": {
-        "created_from_template_guid": null,
-        "created_from_template_version": null,
-        "template_tags": []
-      },
-      "width": null,
-      "schedule": null
-    },
-    {
-      "type": "Agents::RunScriptAgent",
-      "name": "Get details abilities",
-      "disabled": false,
-      "description": null,
-      "guid": "24ae0bafd2b763e4d0cb05695e6b35ce",
-      "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
-      "options": {
-        "language": "Python",
-        "timeout": 10,
-        "script": "def main(input):\n    output = []\n    for entry in input:\n        output.append({\n            \"technique_id\": entry.get(\"technique_id\"),\n            \"name\": entry.get(\"name\")\n        })\n    return output",
-        "input": "=implode_abilities"
       },
       "reporting": {
         "time_saved_value": 0,
@@ -1091,12 +1158,12 @@
       "width": 270
     },
     {
-      "content": "# Compare detections vs techniques\nThe ultimate goal is to compare the detections vs techniques. Once a detection is being triggered the story will update the case and see what detections are coming in.",
+      "content": "The results from this API call are appended to an array managed by the `Merge Results` Action. If the array does not exist, it will be created automatically.\n\nEach time around this loop, more results will be appended to the same array.",
       "position": [
-        -45,
-        1635
+        -525,
+        1740
       ],
-      "guid": "13f9a72a70e96dd9a3e6de0086af3ff5",
+      "guid": "e8fe112e8bad148fb42f3cd0eb4a6acd",
       "width": 270
     }
   ],
@@ -1111,7 +1178,7 @@
     },
     {
       "source": 3,
-      "receiver": 4
+      "receiver": 25
     },
     {
       "source": 4,
@@ -1151,7 +1218,7 @@
     },
     {
       "source": 13,
-      "receiver": 24
+      "receiver": 21
     },
     {
       "source": 14,
@@ -1167,26 +1234,46 @@
     },
     {
       "source": 18,
-      "receiver": 21
+      "receiver": 26
     },
     {
-      "source": 21,
-      "receiver": 22
+      "source": 19,
+      "receiver": 20
     },
     {
-      "source": 22,
-      "receiver": 23
-    },
-    {
-      "source": 23,
+      "source": 20,
       "receiver": 17
     },
     {
-      "source": 24,
+      "source": 21,
       "receiver": 14
+    },
+    {
+      "source": 22,
+      "receiver": 25
+    },
+    {
+      "source": 23,
+      "receiver": 22
+    },
+    {
+      "source": 24,
+      "receiver": 4
+    },
+    {
+      "source": 25,
+      "receiver": 24
+    },
+    {
+      "source": 25,
+      "receiver": 23
+    },
+    {
+      "source": 26,
+      "receiver": 19
     }
   ],
-  "diagram_layout": "{\"d184a0b206211f80fedc52ecf4a0e5df\":[-465,930],\"dd6815db010cc78a3af88bb80763cdfc\":[-465,1065],\"abd925bdb3d26ae3287963c1dc9f241d\":[-465,1215],\"2c9b99bc2e519890ef297b8b8853c5a1\":[15,1290],\"6d94bea7553dbc67fd249d0a02df5746\":[60,1380],\"b9cf8a417e83d6b2939f0732875be4fc\":[15,1095],\"7a8477649847f8fbd5f7b67abc858aa5\":[120,705],\"a59e2d272cb7cdb2c6265be1860b40ef\":[120,510],\"2f9aef01d58ef3618a6b20565de7d6e8\":[120,615],\"f799cc9f14a1be3a32b9a77df3d0096e\":[105,225],\"3ef555cb2587e3e2addf4160f57acebd\":[120,795],\"bf5e9429a20d80bd4ce76abb28771d9b\":[120,870],\"ddeca77f6cf7166a9ecdbf416ef49d23\":[285,945],\"5e0d277d0ad99f202b22dbc597e7329a\":[285,1035],\"afc33998bf25ff39851b37bb74e6d0eb\":[285,1200],\"7f8471ce9e15adc84c09ecd327f445c1\":[15,1185],\"b7a8f26dee573918623e2b1aeabdb252\":[60,1455],\"187e251ae41f95b587e7323b665f7424\":[270,1920],\"c3bc0c676cb19c970d8480a3130d0c84\":[60,1545],\"a32b3624674b1bcc53f634727f757050\":[735,1260],\"32b4cf9b0a5a9fc639e29231c83f1ebf\":[720,1035],\"7c8ec4d48292924cb5734a402213a777\":[255,1620],\"c3be97b98f0d879aa9df233d148b1d4e\":[270,1725],\"f5460b8b84274b0eab1ea39a291474ac\":[270,1815],\"24ae0bafd2b763e4d0cb05695e6b35ce\":[285,1110]}",
+  "diagram_layout": "{\"c171aa6c1363bfd4a30bbdbe9eb9926f\":[-465,930],\"8734aac10416ae959ca6d25d0050531b\":[-465,1005],\"766235478936a462ded70eda704232bb\":[-465,1095],\"acdcbe52cda54649134775bd135c0cd7\":[15,1305],\"da66aad89a664c07d65afa6eb89b1e46\":[0,1545],\"fcab6c3f7d2e699f8d1b1d31641cdb07\":[15,1095],\"0f864779df931d3a7e797aaa069eda47\":[120,705],\"4216509117effce3c5bbae2f99315eec\":[120,510],\"eff2c5706ad3a14652c8c8990bf3fdc8\":[120,615],\"c6ebdad68b10beb6011f0e10ee143d1e\":[120,210],\"e5aaf4b3a3234b384f2523bef48c055c\":[120,795],\"20f84a69292141ff3e52f0fb370ff090\":[120,870],\"f6c4ee8bb627e647d3398347c0c7a9bd\":[285,945],\"e2350ac2db00424bf230179d02e80f58\":[285,1035],\"3448dd5283fe2839e5055ed3b2949b15\":[285,1200],\"a8866a13e7b06f570444c4316ac4c990\":[15,1185],\"dee8e983846382ec2970f5d84448d613\":[0,1620],\"973a479e0500973c81f384c1c94151e1\":[60,2145],\"6454087271e9581388a10854a4a7b0ed\":[0,1710],\"9105f3a0ee56bd1c580ba150855d2399\":[15,1905],\"a4e03a842a48a61e6bcbf7a69ac488bb\":[15,2025],\"f9097cfd5389ef73c7092ccb20aaa009\":[285,1110],\"5b555addfc894d50dc39384f8eba19ab\":[-255,1530],\"c2b18c7e7023bc776677736270e05d03\":[-255,1455],\"7c48e9b5297e0023aa061d1b4007e6a9\":[0,1455],\"7ba33f48ba7f3c281d4e998afea41385\":[-255,1380],\"0d591dbc096e61731959a35f26e15e4f\":[-180,1800]}",
   "send_to_story_enabled": false,
   "entry_agent_guid": null,
   "exit_agent_guids": [],
@@ -1264,11 +1351,13 @@
       }
     ],
     "visibility": "tenant",
-    "agent_guid": "f799cc9f14a1be3a32b9a77df3d0096e",
+    "agent_guid": "c6ebdad68b10beb6011f0e10ee143d1e",
     "success_message": "Thank you for your submission",
     "loading_message": ""
   },
   "synchronous_webhooks_enabled": false,
+  "send_to_story_access_source": 0,
+  "send_to_story_skill_use_requires_confirmation": true,
   "forms": [
     {
       "fields": [
@@ -1334,7 +1423,7 @@
         }
       ],
       "visibility": "tenant",
-      "agent_guid": "f799cc9f14a1be3a32b9a77df3d0096e",
+      "agent_guid": "c6ebdad68b10beb6011f0e10ee143d1e",
       "success_message": "Thank you for your submission",
       "loading_message": ""
     }
@@ -1454,11 +1543,11 @@
         }
       ],
       "visibility": "tenant",
-      "agent_guid": "f799cc9f14a1be3a32b9a77df3d0096e",
+      "agent_guid": "c6ebdad68b10beb6011f0e10ee143d1e",
       "success_message": "Thank you for your submission",
       "loading_message": "",
       "logo_contents": "iVBORw0KGgoAAAANSUhEUgAAAFQAAAAYCAYAAABk8drWAAAACXBIWXMAAAsT\nAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAARCSURB\nVHgB7VhLctpAEB1k7LVyA/kEgRMEn8BQ5e8qcALjE1icAPsEkJW/VeATwA1Q\nTmDlBCE7l3/kPblbTIiMJcVOeaFXBRrN9Mz0vOnu6ZExBQoUKFCgwAdByX4Z\nDAbuw8PDwWw2a+LVk+rAcZxgZWWl02g0QpMSl5eXXRlnvLq62kLfqcmIi4uL\nZqlU+lwulztJ/aGvJ/p+39nZ6cu8R3j30c/f3t7umP8MRwtXV1df7+/vb6iM\nmZNJVJ6enppom5ydnbVNCpAIjENZF786Fn1kMgLE1PDocRz0HyTJQKe2zNOj\nMbBO3o1sZgS2Ybw29KqYd0ZEKMg8AGl980zAS3BhqV0Sv0Qmsho8/iCQi5T6\nXED/WtJmoj7W9/b2Vgk9gXUGWM+JtoF4H/VdFEdK/HvB4UIxuZ+2A2SPlykF\nayLhXkJ9z/wDsJlHaTZld3fXR4ho7O3tHWudRbyrxC+Ca+L4rxFuyXlJ7c7j\n4yOtKcuuuXd3d+0XJvMkZPwFWpm4cV64sLTBawuGB/UYus7Pz7vUB3NOYLGx\nV+EsuIHrT2ydITNCn5/sxyfaKdO0x02Qo8wNY7Yt52ChmeOKraAN2ZxlyBxL\nZb6xFCuvxWN4UE361PGYYn1egli0KSQJxIy42VIfso959rCehplFOYYUkY0M\nCJvn68C5CDUJLi2ho7msExVa3Pk0QL9veJxIuZ3W0pkZIMNYR3GodSBjA3VV\nlsUAPK1HprCOuqoQpmHGRV3FzNfcQvZQpSx06YjcFx3fMW8E7mBK0W6egwEk\n+ObZKkjqIO0hR1Ih/0vfYeGhpmAwgLpUX4OkMQv7+/shCNV0i+GtBrlYX5Kn\n2QLjNTeCMVvby6KkZ7IhsF/E6jyTDhqDfZMBJAHzUHHGP1cOuR8mJ05PTz0z\nPzs2MfZM20BgLAfCXGzmEAYTWbN4YRPy3JQxNusauo1V3hF3yopg4T1TbISS\nB3nSKLhZgL6HLDN8oLxp3ga8vPSTfnD3MTcTzw1ypeHASI6NX88+5Jy1tTWm\nF1luMRw8voHIKeeZbHBTHGCJgGseW4dU7pySrm3m6w62trZa9o/kQcdrkTNw\naw9c8fZVhcV+oqtb5FY0DDgSTw7TKgKT7+gkhH0jyQK6Tt4kG+7eMtmMIAas\nLj6ELULqtsfw8oJ1jdA+YGjgLYvvPCcoR84Yc63+UWiIxucf78HiSsuUZFvL\nTpgF73rzSAI3FMS0MnQJtUCSmD/KdwvdGFfyygnb5NZIBGI8ShzTpwnzUcpa\nWU2oh1p8ytOVmDIsxIlImOkB0w/9AGFDFhaabJhCmcNlH0zgYoGxXHKxHW45\n1LSF86vXQPdQ6sYqy7BmhYlofs7NPpImaZumR5y3jzVvsFLI0nW6ko9WRG6o\naVg0v/nA0JCwjHhx1aktw3jGA+yF8dykr2ZisRVsZLg4XpIcSGWOG+b5ilag\nQIECBZLxG5sJ41WbSDouAAAAAElFTkSuQmCC\n",
-      "logo_filename": "nites.jpeg",
+      "logo_filename": "image",
       "display_logo": false,
       "icon": ":adhesive_bandage:",
       "sso_groups": null
@@ -1470,7 +1559,8 @@
   "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
   "integration_product": null,
   "integration_vendor": null,
-  "exported_at": "2024-07-05T11:01:57Z",
+  "llm_product_instructions": "",
+  "exported_at": "2024-09-24T00:25:56Z",
   "icon": ":date:",
   "integrations": [
     {
@@ -1488,7 +1578,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Range start",
@@ -1496,14 +1587,15 @@
           "required": true,
           "type": "DATE",
           "ranking": 1073741824,
-          "value": "\"=http_request_action_create_adversary_profile.headers.date\"",
+          "value": "\"\"",
           "options": [
             "Option 1",
             "Option 2"
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Range end",
@@ -1518,7 +1610,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Record type ID",
@@ -1533,7 +1626,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Page",
@@ -1548,7 +1642,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Tines credential",
@@ -1556,14 +1651,15 @@
           "required": false,
           "type": "CREDENTIAL",
           "ranking": 2013265920,
-          "value": "\"=CREDENTIAL.sec598b\"",
+          "value": "\"=CREDENTIAL.sec598_tines_credentials\"",
           "options": [
             "Option 1",
             "Option 2"
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Per page",
@@ -1578,7 +1674,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Order field ID",
@@ -1593,7 +1690,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Sort direction order",
@@ -1608,7 +1706,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Story IDs",
@@ -1623,7 +1722,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Record field IDs",
@@ -1638,7 +1738,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Filters",
@@ -1653,7 +1754,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Test mode",
@@ -1668,10 +1770,11 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         }
       ],
-      "action_guid": "2c9b99bc2e519890ef297b8b8853c5a1",
+      "action_guid": "acdcbe52cda54649134775bd135c0cd7",
       "product": "Tines"
     },
     {
@@ -1689,7 +1792,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Tines credential",
@@ -1697,14 +1801,15 @@
           "required": false,
           "type": "CREDENTIAL",
           "ranking": 1073741824,
-          "value": "\"=CREDENTIAL.sec598b\"",
+          "value": "\"=CREDENTIAL.sec598_tines_credentials\"",
           "options": [
             "Option 1",
             "Option 2"
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Case ID",
@@ -1719,7 +1824,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Case status",
@@ -1734,7 +1840,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Case priority",
@@ -1752,7 +1859,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Author email",
@@ -1767,7 +1875,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Opened at",
@@ -1782,7 +1891,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Resolved at",
@@ -1797,7 +1907,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Case name",
@@ -1812,7 +1923,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Add assignee emails",
@@ -1827,7 +1939,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Remove assignee emails",
@@ -1842,7 +1955,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Add tags",
@@ -1857,7 +1971,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Remove tags",
@@ -1872,7 +1987,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Closure conditions",
@@ -1887,7 +2003,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Sub status ID",
@@ -1902,7 +2019,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Description",
@@ -1917,10 +2035,11 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         }
       ],
-      "action_guid": "187e251ae41f95b587e7323b665f7424",
+      "action_guid": "973a479e0500973c81f384c1c94151e1",
       "product": "Tines"
     }
   ]
