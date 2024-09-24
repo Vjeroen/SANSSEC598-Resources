@@ -1,10 +1,10 @@
 {
-  "schema_version": 18,
-  "standard_lib_version": 54,
-  "action_runtime_version": 10,
+  "schema_version": 21,
+  "standard_lib_version": 59,
+  "action_runtime_version": 13,
   "name": "SANS LAB 5.4 - Emulation vs Detection Story",
   "description": null,
-  "guid": "2ee97b35f8f3a4cf0df1e37d32a4c978",
+  "guid": "60e2aff018e50af06581b8090ffced5f",
   "slug": "sans_lab_5_4_emulation_vs_detection_story",
   "agents": [
     {
@@ -12,11 +12,11 @@
       "name": "Detections Webhook Action",
       "disabled": false,
       "description": null,
-      "guid": "2d7930cab79e14f4cea2ee524f5f2ba8",
+      "guid": "c171aa6c1363bfd4a30bbdbe9eb9926f",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
-        "path": "41e4e2937f40c4891ce1161416f4ac6d",
-        "secret": "8a8c16b57d433017837a3c330c478b8d",
+        "path": "b4d62f24e8bd82524ca181c6b4c64799",
+        "secret": "16df3674d149abbd0e565c90b803e6ed",
         "verbs": "get,post"
       },
       "reporting": {
@@ -40,7 +40,7 @@
       "name": "Validate tags and host",
       "disabled": false,
       "description": null,
-      "guid": "1fde1512fba96cca194052b1f9342804",
+      "guid": "8734aac10416ae959ca6d25d0050531b",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "rules": [
@@ -76,7 +76,7 @@
       "name": "Capture Record",
       "disabled": false,
       "description": null,
-      "guid": "8c073770494f7f765d61ec9ac3db797d",
+      "guid": "766235478936a462ded70eda704232bb",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "parent": "",
@@ -102,7 +102,7 @@
           "formula": "<<META.story.name>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7622,
+            "id": 40299,
             "name": "Story name",
             "result_type": "TEXT",
             "fixed_values": []
@@ -112,7 +112,7 @@
           "formula": "<<DATE(\"now\", \"%Y-%m-%d %H:%M:%S\")>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7623,
+            "id": 40300,
             "name": "Timestamp",
             "result_type": "TIMESTAMP",
             "fixed_values": []
@@ -122,7 +122,7 @@
           "formula": "<<detections_webhook_action.body.cat>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7624,
+            "id": 40301,
             "name": "Detection Title",
             "result_type": "TEXT",
             "fixed_values": []
@@ -132,7 +132,7 @@
           "formula": "<<detections_webhook_action.body.detect_mtd.level>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7625,
+            "id": 40302,
             "name": "Level",
             "result_type": "TEXT",
             "fixed_values": []
@@ -142,7 +142,7 @@
           "formula": "<<detections_webhook_action.body.detect_mtd.description>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7626,
+            "id": 40303,
             "name": "Description Rule",
             "result_type": "TEXT",
             "fixed_values": []
@@ -152,7 +152,7 @@
           "formula": "<<detections_webhook_action.body.detect.event.COMMAND_LINE>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7627,
+            "id": 40304,
             "name": "Command",
             "result_type": "TEXT",
             "fixed_values": []
@@ -162,7 +162,7 @@
           "formula": "<<detections_webhook_action.body.detect.routing.event_type>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7628,
+            "id": 40305,
             "name": "Event Type",
             "result_type": "TEXT",
             "fixed_values": []
@@ -172,7 +172,7 @@
           "formula": "<<detections_webhook_action.body.detect.routing.int_ip>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7629,
+            "id": 40306,
             "name": "Device IP",
             "result_type": "TEXT",
             "fixed_values": []
@@ -182,7 +182,7 @@
           "formula": "<<JSONPATH(detections_webhook_action.body.detect_mtd.tags,\"[0]\")>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7630,
+            "id": 40307,
             "name": "MITRE Tactic",
             "result_type": "TEXT",
             "fixed_values": []
@@ -192,7 +192,7 @@
           "formula": "<<JSONPATH(detections_webhook_action.body.detect_mtd.tags,\"[1]\")>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7631,
+            "id": 40308,
             "name": "MITRE Techniques",
             "result_type": "TEXT",
             "fixed_values": []
@@ -202,7 +202,7 @@
           "formula": "<<DATE_PARSE(detections_webhook_action.body.gen_time).iso8601_milliseconds>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7632,
+            "id": 40309,
             "name": "Generate Time",
             "result_type": "TEXT",
             "fixed_values": []
@@ -212,7 +212,7 @@
           "formula": "<<detections_webhook_action.body.detect.event.PARENT.USER_NAME>>",
           "include_in_update": false,
           "record_field": {
-            "id": 7633,
+            "id": 40310,
             "name": "User",
             "result_type": "TEXT",
             "fixed_values": []
@@ -221,78 +221,78 @@
       ],
       "schedule": null,
       "record_type": {
-        "id": 3709,
+        "id": 15874,
         "name": "Detected Alerts",
         "editable": true,
         "record_fields": [
           {
-            "id": 7622,
+            "id": 40299,
             "name": "Story name",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7623,
+            "id": 40300,
             "name": "Timestamp",
             "result_type": "TIMESTAMP",
             "fixed_values": []
           },
           {
-            "id": 7624,
+            "id": 40301,
             "name": "Detection Title",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7625,
+            "id": 40302,
             "name": "Level",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7626,
+            "id": 40303,
             "name": "Description Rule",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7627,
+            "id": 40304,
             "name": "Command",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7628,
+            "id": 40305,
             "name": "Event Type",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7629,
+            "id": 40306,
             "name": "Device IP",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7630,
+            "id": 40307,
             "name": "MITRE Tactic",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7631,
+            "id": 40308,
             "name": "MITRE Techniques",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7632,
+            "id": 40309,
             "name": "Generate Time",
             "result_type": "TEXT",
             "fixed_values": []
           },
           {
-            "id": 7633,
+            "id": 40310,
             "name": "User",
             "result_type": "TEXT",
             "fixed_values": []
@@ -305,7 +305,7 @@
       "name": "List records with a filter",
       "disabled": false,
       "description": "Retrieve a list of record results.\n\nLink to documentation: https://www.tines.com/api/records/list",
-      "guid": "620b8325648e0030961a21e7d4b4a9c2",
+      "guid": "acdcbe52cda54649134775bd135c0cd7",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "https://<<INPUT.tenant_domain>>/api/v1/records",
@@ -354,7 +354,7 @@
       "name": "Transform detections to table",
       "disabled": false,
       "description": null,
-      "guid": "8b8ca0547c7bd64cc3808b49cbf67198",
+      "guid": "da66aad89a664c07d65afa6eb89b1e46",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
@@ -385,7 +385,7 @@
       "name": "Create Adversary Emulation Case",
       "disabled": false,
       "description": null,
-      "guid": "8c169fa88a605807a1528b805dabe9bc",
+      "guid": "fcab6c3f7d2e699f8d1b1d31641cdb07",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "case_details": "{\"case_description\":\"\\n# Techniques executed\\n\\n<<transform_to_table.output>>\\n\\n\",\"case_name\":\"SEC598:Adversary Emulation:<<lab_5_4_adv_emulation_page.body.emulation_plan_name>>\"}"
@@ -412,7 +412,7 @@
       "name": "Create Adversary Profile",
       "disabled": false,
       "description": null,
-      "guid": "b4be0814f00b9ea5a320ac4ab0d5f273",
+      "guid": "0f864779df931d3a7e797aaa069eda47",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "http://<<RESOURCE.caldera_domain>>/api/v2/adversaries",
@@ -468,7 +468,7 @@
       "name": "HTTP Request Action - Create Adversary Profile",
       "disabled": false,
       "description": null,
-      "guid": "5dcac4582866930f9d7a61076da06844",
+      "guid": "4216509117effce3c5bbae2f99315eec",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "http://<<RESOURCE.caldera_domain>>/api/v2/abilities",
@@ -501,7 +501,7 @@
       "name": "Event Transform Action",
       "disabled": false,
       "description": null,
-      "guid": "13983880e121fb9ef59c4c1bb4b78470",
+      "guid": "eff2c5706ad3a14652c8c8990bf3fdc8",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
@@ -532,7 +532,7 @@
       "name": "Lab 5.4 Adv. Emulation Page",
       "disabled": false,
       "description": null,
-      "guid": "0b4e0fd1676fe969297db38e11732cdc",
+      "guid": "c6ebdad68b10beb6011f0e10ee143d1e",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "fields": "",
@@ -551,7 +551,7 @@
         "pages_action_color": "#d10000",
         "pages_appearance_mode": "dark",
         "pages_background_color": "#F9F9F9",
-        "url_identifier": "622aa1285ee7ad7eb28b9f086a108261"
+        "url_identifier": "6d42825ba0d3d1908f598f287ccbf3d9"
       },
       "reporting": {
         "time_saved_value": 0,
@@ -574,7 +574,7 @@
       "name": "Create Operation",
       "disabled": false,
       "description": null,
-      "guid": "3bad08329383fb11bbba6f0dd39b4fe5",
+      "guid": "e5aaf4b3a3234b384f2523bef48c055c",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "http://<<RESOURCE.caldera_domain>>/api/v2/operations",
@@ -620,7 +620,7 @@
       "name": "Explode Abilities",
       "disabled": false,
       "description": null,
-      "guid": "5acca582df611af045cc8767fa5e021e",
+      "guid": "20f84a69292141ff3e52f0fb370ff090",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "explode",
@@ -650,7 +650,7 @@
       "name": "Get ability details",
       "disabled": false,
       "description": null,
-      "guid": "920e37cfc53382d59db7fe66608422b8",
+      "guid": "f6c4ee8bb627e647d3398347c0c7a9bd",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "http://<<RESOURCE.caldera_domain>>/api/v2/abilities/<<explode_abilities.ability>>",
@@ -682,7 +682,7 @@
       "name": "Implode abilities",
       "disabled": false,
       "description": null,
-      "guid": "e1c3ab87e0c223d444da12e00d284a76",
+      "guid": "e2350ac2db00424bf230179d02e80f58",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "implode",
@@ -712,7 +712,7 @@
       "name": "Transform to table",
       "disabled": false,
       "description": null,
-      "guid": "52fee7429363bddfab171dd3c33eb0b0",
+      "guid": "3448dd5283fe2839e5055ed3b2949b15",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
@@ -743,7 +743,7 @@
       "name": "Wait for operation",
       "disabled": false,
       "description": "Wait 10 minutes before we have all the alerts",
-      "guid": "c80e03abfe85818000d61fd132cd2e1e",
+      "guid": "a8866a13e7b06f570444c4316ac4c990",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "delay",
@@ -770,7 +770,7 @@
       "name": "Transform to Markdown",
       "disabled": false,
       "description": null,
-      "guid": "aef1610d0f01643e67e3494d51d98163",
+      "guid": "dee8e983846382ec2970f5d84448d613",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
@@ -801,7 +801,7 @@
       "name": "Update a case",
       "disabled": false,
       "description": "Update a case in Tines.\n\nLink to documentation: https://www.tines.com/api/cases/update",
-      "guid": "f31fe74072b7a30339294be4671497e9",
+      "guid": "973a479e0500973c81f384c1c94151e1",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "url": "https://<<INPUT.tenant_domain>>/api/v2/cases/<<INPUT.case_id>>",
@@ -852,7 +852,7 @@
       "name": "Build Results",
       "disabled": false,
       "description": null,
-      "guid": "a96c984e81d97e7b36e0e82c009f9342",
+      "guid": "6454087271e9581388a10854a4a7b0ed",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "message_only",
@@ -884,14 +884,14 @@
       "name": "Transform vs table to Markdown",
       "disabled": false,
       "description": null,
-      "guid": "cd083ef5f5900e5c3002fb158cce9b8f",
+      "guid": "9105f3a0ee56bd1c580ba150855d2399",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
         "input": "=compare_techniques_with_detections.output.detected",
-        "guidance": "Transform the  input into a markdown table with title technique ID and technique name\n",
+        "guidance": "Transform the  input into a markdown table with title technique ID and technique name. If it is a null, then output \\\"detected is none\\\".\n",
         "language": "Python",
-        "script": "def main(input):\n    table = \"| Technique ID | Technique Name |\\n| --- | --- |\\n\"\n    for technique in input:\n        table += f\"| {technique.get('technique_id')} | {technique.get('name')} |\\n\"\n    return table"
+        "script": "def main(input):\n    table = []\n    for item in input:\n        technique_id = item.get('technique_id')\n        name = item.get('name')\n        if technique_id is None or name is None:\n            table.append(['detected is none', 'detected is none'])\n        else:\n            table.append([technique_id, name])\n    \n    return '| Technique ID | Technique Name |\\n|--------------|---------------|\\n' + '\\n'.join(f'| {id_} | {name} |' for id_, name in table)"
       },
       "reporting": {
         "time_saved_value": 0,
@@ -915,7 +915,7 @@
       "name": "Transform undetected table to Markdown",
       "disabled": false,
       "description": null,
-      "guid": "397b5af0fed2b4d3f55704df975a6724",
+      "guid": "a4e03a842a48a61e6bcbf7a69ac488bb",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "mode": "automatic",
@@ -946,7 +946,7 @@
       "name": "Get details abilities",
       "disabled": false,
       "description": null,
-      "guid": "2224a5590350b6cc28b36e028289985d",
+      "guid": "f9097cfd5389ef73c7092ccb20aaa009",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "language": "Python",
@@ -976,7 +976,7 @@
       "name": "List Records with a Filter",
       "disabled": false,
       "description": null,
-      "guid": "630a85a635dbc1502aab448e52adca31",
+      "guid": "5b555addfc894d50dc39384f8eba19ab",
       "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
       "options": {
         "url": "<<list_records_with_a_filter.body.meta.next_page>>",
@@ -1009,7 +1009,7 @@
       "name": "If has_more",
       "disabled": false,
       "description": "",
-      "guid": "92936e8a8dbf9a256d1b6083c2b1aece",
+      "guid": "c2b18c7e7023bc776677736270e05d03",
       "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
       "options": {
         "rules": [
@@ -1041,7 +1041,7 @@
       "name": "If not has_more",
       "disabled": false,
       "description": null,
-      "guid": "18fac57252b08e83083e1540a217b1a8",
+      "guid": "7c48e9b5297e0023aa061d1b4007e6a9",
       "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
       "options": {
         "rules": [
@@ -1073,7 +1073,7 @@
       "name": "Merge Results",
       "disabled": false,
       "description": null,
-      "guid": "4c274a23539d2c91989de2857415f03e",
+      "guid": "7ba33f48ba7f3c281d4e998afea41385",
       "origin_story_identifier": "cloud:d521f765a49c72507257a2620612ee96:b6ba9a48c4bda40bb9dfa52b14d9490a",
       "options": {
         "mode": "message_only",
@@ -1103,7 +1103,7 @@
       "name": "Compare techniques with detections",
       "disabled": false,
       "description": null,
-      "guid": "dbcd998e72daf47f2eac7d659979c944",
+      "guid": "0d591dbc096e61731959a35f26e15e4f",
       "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
       "options": {
         "language": "Python",
@@ -1160,8 +1160,8 @@
     {
       "content": "The results from this API call are appended to an array managed by the `Merge Results` Action. If the array does not exist, it will be created automatically.\n\nEach time around this loop, more results will be appended to the same array.",
       "position": [
-        -555,
-        1395
+        -525,
+        1740
       ],
       "guid": "e8fe112e8bad148fb42f3cd0eb4a6acd",
       "width": 270
@@ -1273,7 +1273,7 @@
       "receiver": 19
     }
   ],
-  "diagram_layout": "{\"2d7930cab79e14f4cea2ee524f5f2ba8\":[-465,930],\"1fde1512fba96cca194052b1f9342804\":[-465,1005],\"8c073770494f7f765d61ec9ac3db797d\":[-465,1095],\"620b8325648e0030961a21e7d4b4a9c2\":[30,1305],\"8b8ca0547c7bd64cc3808b49cbf67198\":[0,1545],\"8c169fa88a605807a1528b805dabe9bc\":[15,1095],\"b4be0814f00b9ea5a320ac4ab0d5f273\":[120,705],\"5dcac4582866930f9d7a61076da06844\":[120,510],\"13983880e121fb9ef59c4c1bb4b78470\":[120,615],\"0b4e0fd1676fe969297db38e11732cdc\":[-15,15],\"3bad08329383fb11bbba6f0dd39b4fe5\":[120,795],\"5acca582df611af045cc8767fa5e021e\":[120,870],\"920e37cfc53382d59db7fe66608422b8\":[285,945],\"e1c3ab87e0c223d444da12e00d284a76\":[285,1035],\"52fee7429363bddfab171dd3c33eb0b0\":[285,1200],\"c80e03abfe85818000d61fd132cd2e1e\":[15,1185],\"aef1610d0f01643e67e3494d51d98163\":[0,1620],\"f31fe74072b7a30339294be4671497e9\":[60,2145],\"a96c984e81d97e7b36e0e82c009f9342\":[0,1710],\"cd083ef5f5900e5c3002fb158cce9b8f\":[75,1890],\"397b5af0fed2b4d3f55704df975a6724\":[15,2025],\"2224a5590350b6cc28b36e028289985d\":[285,1110],\"630a85a635dbc1502aab448e52adca31\":[-255,1530],\"92936e8a8dbf9a256d1b6083c2b1aece\":[-255,1455],\"18fac57252b08e83083e1540a217b1a8\":[0,1455],\"4c274a23539d2c91989de2857415f03e\":[-255,1380],\"dbcd998e72daf47f2eac7d659979c944\":[-180,1800]}",
+  "diagram_layout": "{\"c171aa6c1363bfd4a30bbdbe9eb9926f\":[-465,930],\"8734aac10416ae959ca6d25d0050531b\":[-465,1005],\"766235478936a462ded70eda704232bb\":[-465,1095],\"acdcbe52cda54649134775bd135c0cd7\":[15,1305],\"da66aad89a664c07d65afa6eb89b1e46\":[0,1545],\"fcab6c3f7d2e699f8d1b1d31641cdb07\":[15,1095],\"0f864779df931d3a7e797aaa069eda47\":[120,705],\"4216509117effce3c5bbae2f99315eec\":[120,510],\"eff2c5706ad3a14652c8c8990bf3fdc8\":[120,615],\"c6ebdad68b10beb6011f0e10ee143d1e\":[120,210],\"e5aaf4b3a3234b384f2523bef48c055c\":[120,795],\"20f84a69292141ff3e52f0fb370ff090\":[120,870],\"f6c4ee8bb627e647d3398347c0c7a9bd\":[285,945],\"e2350ac2db00424bf230179d02e80f58\":[285,1035],\"3448dd5283fe2839e5055ed3b2949b15\":[285,1200],\"a8866a13e7b06f570444c4316ac4c990\":[15,1185],\"dee8e983846382ec2970f5d84448d613\":[0,1620],\"973a479e0500973c81f384c1c94151e1\":[60,2145],\"6454087271e9581388a10854a4a7b0ed\":[0,1710],\"9105f3a0ee56bd1c580ba150855d2399\":[15,1905],\"a4e03a842a48a61e6bcbf7a69ac488bb\":[15,2025],\"f9097cfd5389ef73c7092ccb20aaa009\":[285,1110],\"5b555addfc894d50dc39384f8eba19ab\":[-255,1530],\"c2b18c7e7023bc776677736270e05d03\":[-255,1455],\"7c48e9b5297e0023aa061d1b4007e6a9\":[0,1455],\"7ba33f48ba7f3c281d4e998afea41385\":[-255,1380],\"0d591dbc096e61731959a35f26e15e4f\":[-180,1800]}",
   "send_to_story_enabled": false,
   "entry_agent_guid": null,
   "exit_agent_guids": [],
@@ -1351,11 +1351,13 @@
       }
     ],
     "visibility": "tenant",
-    "agent_guid": "0b4e0fd1676fe969297db38e11732cdc",
+    "agent_guid": "c6ebdad68b10beb6011f0e10ee143d1e",
     "success_message": "Thank you for your submission",
     "loading_message": ""
   },
   "synchronous_webhooks_enabled": false,
+  "send_to_story_access_source": 0,
+  "send_to_story_skill_use_requires_confirmation": true,
   "forms": [
     {
       "fields": [
@@ -1421,7 +1423,7 @@
         }
       ],
       "visibility": "tenant",
-      "agent_guid": "0b4e0fd1676fe969297db38e11732cdc",
+      "agent_guid": "c6ebdad68b10beb6011f0e10ee143d1e",
       "success_message": "Thank you for your submission",
       "loading_message": ""
     }
@@ -1541,11 +1543,11 @@
         }
       ],
       "visibility": "tenant",
-      "agent_guid": "0b4e0fd1676fe969297db38e11732cdc",
+      "agent_guid": "c6ebdad68b10beb6011f0e10ee143d1e",
       "success_message": "Thank you for your submission",
       "loading_message": "",
       "logo_contents": "iVBORw0KGgoAAAANSUhEUgAAAFQAAAAYCAYAAABk8drWAAAACXBIWXMAAAsT\nAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAARCSURB\nVHgB7VhLctpAEB1k7LVyA/kEgRMEn8BQ5e8qcALjE1icAPsEkJW/VeATwA1Q\nTmDlBCE7l3/kPblbTIiMJcVOeaFXBRrN9Mz0vOnu6ZExBQoUKFCgwAdByX4Z\nDAbuw8PDwWw2a+LVk+rAcZxgZWWl02g0QpMSl5eXXRlnvLq62kLfqcmIi4uL\nZqlU+lwulztJ/aGvJ/p+39nZ6cu8R3j30c/f3t7umP8MRwtXV1df7+/vb6iM\nmZNJVJ6enppom5ydnbVNCpAIjENZF786Fn1kMgLE1PDocRz0HyTJQKe2zNOj\nMbBO3o1sZgS2Ybw29KqYd0ZEKMg8AGl980zAS3BhqV0Sv0Qmsho8/iCQi5T6\nXED/WtJmoj7W9/b2Vgk9gXUGWM+JtoF4H/VdFEdK/HvB4UIxuZ+2A2SPlykF\nayLhXkJ9z/wDsJlHaTZld3fXR4ho7O3tHWudRbyrxC+Ca+L4rxFuyXlJ7c7j\n4yOtKcuuuXd3d+0XJvMkZPwFWpm4cV64sLTBawuGB/UYus7Pz7vUB3NOYLGx\nV+EsuIHrT2ydITNCn5/sxyfaKdO0x02Qo8wNY7Yt52ChmeOKraAN2ZxlyBxL\nZb6xFCuvxWN4UE361PGYYn1egli0KSQJxIy42VIfso959rCehplFOYYUkY0M\nCJvn68C5CDUJLi2ho7msExVa3Pk0QL9veJxIuZ3W0pkZIMNYR3GodSBjA3VV\nlsUAPK1HprCOuqoQpmHGRV3FzNfcQvZQpSx06YjcFx3fMW8E7mBK0W6egwEk\n+ObZKkjqIO0hR1Ih/0vfYeGhpmAwgLpUX4OkMQv7+/shCNV0i+GtBrlYX5Kn\n2QLjNTeCMVvby6KkZ7IhsF/E6jyTDhqDfZMBJAHzUHHGP1cOuR8mJ05PTz0z\nPzs2MfZM20BgLAfCXGzmEAYTWbN4YRPy3JQxNusauo1V3hF3yopg4T1TbISS\nB3nSKLhZgL6HLDN8oLxp3ga8vPSTfnD3MTcTzw1ypeHASI6NX88+5Jy1tTWm\nF1luMRw8voHIKeeZbHBTHGCJgGseW4dU7pySrm3m6w62trZa9o/kQcdrkTNw\naw9c8fZVhcV+oqtb5FY0DDgSTw7TKgKT7+gkhH0jyQK6Tt4kG+7eMtmMIAas\nLj6ELULqtsfw8oJ1jdA+YGjgLYvvPCcoR84Yc63+UWiIxucf78HiSsuUZFvL\nTpgF73rzSAI3FMS0MnQJtUCSmD/KdwvdGFfyygnb5NZIBGI8ShzTpwnzUcpa\nWU2oh1p8ytOVmDIsxIlImOkB0w/9AGFDFhaabJhCmcNlH0zgYoGxXHKxHW45\n1LSF86vXQPdQ6sYqy7BmhYlofs7NPpImaZumR5y3jzVvsFLI0nW6ko9WRG6o\naVg0v/nA0JCwjHhx1aktw3jGA+yF8dykr2ZisRVsZLg4XpIcSGWOG+b5ilag\nQIECBZLxG5sJ41WbSDouAAAAAElFTkSuQmCC\n",
-      "logo_filename": "nites.jpeg",
+      "logo_filename": "image",
       "display_logo": false,
       "icon": ":adhesive_bandage:",
       "sso_groups": null
@@ -1557,7 +1559,8 @@
   "origin_story_identifier": "cloud:e2be76a3c9bc755abfb6fd22fd03680b:3c9fef2b1e4d12fd12335ccb6cb14b66",
   "integration_product": null,
   "integration_vendor": null,
-  "exported_at": "2024-07-12T11:54:17Z",
+  "llm_product_instructions": "",
+  "exported_at": "2024-09-24T00:25:56Z",
   "icon": ":date:",
   "integrations": [
     {
@@ -1575,7 +1578,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Range start",
@@ -1590,7 +1594,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Range end",
@@ -1605,7 +1610,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Record type ID",
@@ -1620,7 +1626,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Page",
@@ -1635,7 +1642,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Tines credential",
@@ -1650,7 +1658,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Per page",
@@ -1665,7 +1674,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Order field ID",
@@ -1680,7 +1690,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Sort direction order",
@@ -1695,7 +1706,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Story IDs",
@@ -1710,7 +1722,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Record field IDs",
@@ -1725,7 +1738,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Filters",
@@ -1740,7 +1754,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Test mode",
@@ -1755,10 +1770,11 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         }
       ],
-      "action_guid": "620b8325648e0030961a21e7d4b4a9c2",
+      "action_guid": "acdcbe52cda54649134775bd135c0cd7",
       "product": "Tines"
     },
     {
@@ -1776,7 +1792,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Tines credential",
@@ -1791,7 +1808,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Case ID",
@@ -1806,7 +1824,8 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Case status",
@@ -1821,7 +1840,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Case priority",
@@ -1839,7 +1859,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Author email",
@@ -1854,7 +1875,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Opened at",
@@ -1869,7 +1891,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Resolved at",
@@ -1884,7 +1907,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Case name",
@@ -1899,7 +1923,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Add assignee emails",
@@ -1914,7 +1939,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Remove assignee emails",
@@ -1929,7 +1955,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Add tags",
@@ -1944,7 +1971,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Remove tags",
@@ -1959,7 +1987,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Closure conditions",
@@ -1974,7 +2003,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Sub status ID",
@@ -1989,7 +2019,8 @@
           ],
           "is_collapsed": true,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         },
         {
           "name": "Description",
@@ -2004,10 +2035,11 @@
           ],
           "is_collapsed": false,
           "sub_type": "HTML",
-          "multi_select_enabled": false
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
         }
       ],
-      "action_guid": "f31fe74072b7a30339294be4671497e9",
+      "action_guid": "973a479e0500973c81f384c1c94151e1",
       "product": "Tines"
     }
   ]
