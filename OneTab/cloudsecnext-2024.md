@@ -5,3 +5,6 @@ https://www.one-tab.com/page/-EbIRnJ2SOGMcq5nKMe2uQ
 
 ## SEC598.2: Security Automation Engineering
 https://www.one-tab.com/page/UQCD8QtdRamDRHkn558r1g
+
+## SEC598.3: Security Automation in the Cloud
+https://www.one-tab.com/page/E_kNrEVTQhaU99sD3VxQIg
