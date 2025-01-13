@@ -1,3 +1,2 @@
 ## SEC598.1: Security Automation Concepts
-https://www.one-tab.com/page/c9DH8eMrT2aS71d3ZpU-Zg
-
+https://www.one-tab.com/page/37x3xmDgRsOFYELeRuEf-Q
