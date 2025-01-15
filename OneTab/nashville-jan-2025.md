@@ -5,4 +5,5 @@ https://www.one-tab.com/page/iB9pfvgRRqCp5CZ_DNoihw
 https://www.one-tab.com/page/eyra0MptSFyIExXzyNNMLQ
 
 ## SEC598.3: Security Automation in the Cloud
+https://www.one-tab.com/page/E_kNrEVTQhaU99sD3VxQIg
 
