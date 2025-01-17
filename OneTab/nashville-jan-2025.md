@@ -11,7 +11,7 @@ https://www.one-tab.com/page/gwhklx7rTwKCMBwPisEbgg
 https://www.one-tab.com/page/2id0g6hXSWaFHZj_93Ygow
 
 ## SEC598.5: Defensive Security Automation
-https://www.one-tab.com/page/njWyOOffSoqQbd13pK4fMw
+https://www.one-tab.com/page/EhMseKwNTIeRThHGgQkDeg
 
 
 
