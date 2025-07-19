@@ -43,7 +43,7 @@ Azure template spec, Tines story.
 3. Using your favorite text editor, describe how the automation meets the security requirements and solves the security or business problem.
 4. Submit the text file (capturing 1 and 3) along with the automation code (2) to the course authors via email.  Wait up to 7 days for our analysis and response.
 jostrom@stora.io
-jeroen.vandeleur@nviso.eu
+jeroen@agron.be
 
 We will also set up security playbooks in SOAR that integrate with Ansible to trigger automated remediation tasks such as disabling compromised user accounts, 
 applying firewall rules, or quarantining malicious endpoints.
