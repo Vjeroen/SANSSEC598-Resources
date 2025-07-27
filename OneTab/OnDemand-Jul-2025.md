@@ -1,5 +1,5 @@
-## SEC598.1: Security Automation Concepts
-https://www.one-tab.com/page/k85lDf2wQ9uXnPdSejc0Jw
+## SEC598.1: Foundations of GenAI, LLMs, & Security Automation
+https://www.one-tab.com/page/jwzThGgrQkeXndUMNgKP6A
 
 ## SEC598.2: Security Automation Engineering
 https://www.one-tab.com/page/VHIjjIipSBmLJ8eOGxhawg
