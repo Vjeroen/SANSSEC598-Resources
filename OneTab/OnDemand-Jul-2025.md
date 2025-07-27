@@ -4,7 +4,7 @@ https://www.one-tab.com/page/jwzThGgrQkeXndUMNgKP6A
 ## SEC598.2: Security Automation Engineering & AI Workflows
 https://www.one-tab.com/page/VHIjjIipSBmLJ8eOGxhawg
 
-## SEC598.3: Security Automation in the Cloud
+## SEC598.3: Cloud Automation & AI Security Services
 https://www.one-tab.com/page/FBHNtPwCSryyjuGh-i9iWg
 
 ## SEC598.4: Offensive Security Automation
