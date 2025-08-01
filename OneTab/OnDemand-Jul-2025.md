@@ -11,4 +11,4 @@ https://www.one-tab.com/page/C-fSKhpMSy2QbzIwifgeNw
 https://www.one-tab.com/page/LRaVhz5wR_ujWduM3ff2EA
 
 ## SEC598.5: Defensive Automation & AI-Augmented Response
-https://www.one-tab.com/page/-nvapbjzRO6LSAJY3ZCfiA
+https://www.one-tab.com/page/c8K8jTK7Ss2iZ_1N-TzyEg
