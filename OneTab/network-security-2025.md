@@ -1,5 +1,5 @@
 ## SEC598.1: Foundations of GenAI, LLMs, & Security Automation
-https://www.one-tab.com/page/3aeyPZoiS8alb6nAv2OR-g
+https://www.one-tab.com/page/EM0z_sVlTtqc6H7cB08Kmw
 
 ## SEC598.2: Security Automation Engineering & AI Workflows
 https://www.one-tab.com/page/GPTmR0QTTWyznqxJ-VPCfw
