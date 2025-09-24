@@ -5,7 +5,7 @@ https://www.one-tab.com/page/IAFW4MfZSqCEGdwutaq1VA
 https://www.one-tab.com/page/Oc1SgjYgQfWRDuMOXTBHQw
 
 ## SEC598.3: Cloud Automation & AI Security Services
-https://www.one-tab.com/page/AQ5p6BOVR-qV6KyGFW9hbQ
+https://www.one-tab.com/page/lnIC3nzKT06HJ3N0UCbQsA
 
 ## SEC598.4: Red Team Automation & Offensive AI Agents
 https://www.one-tab.com/page/LRaVhz5wR_ujWduM3ff2EA
