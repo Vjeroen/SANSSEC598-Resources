@@ -8,7 +8,7 @@ https://www.one-tab.com/page/EZ6s0KaaQsWvdTMwXmejJg
 https://www.one-tab.com/page/lnIC3nzKT06HJ3N0UCbQsA
 
 ## SEC598.4: Red Team Automation & Offensive AI Agents
-https://www.one-tab.com/page/stu26zqFSh-6l_0bBiYgXQ
+https://www.one-tab.com/page/_vAtKND7RVmp9kiiBhOAEw
 
 ## SEC598.5: Defensive Automation & AI-Augmented Response
 https://www.one-tab.com/page/wBg-PzoWT5GVAdZHFrWBzA
