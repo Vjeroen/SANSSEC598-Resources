@@ -2,7 +2,7 @@
 https://www.one-tab.com/page/Yhj5N5CzT8GSueoFqCeN9g
 
 ## SEC598.2: Security Automation Engineering & AI Workflows
-https://www.one-tab.com/page/EZ6s0KaaQsWvdTMwXmejJg
+https://www.one-tab.com/page/UFGBmG5FQSOgQeAdxCm0Bg
 
 ## SEC598.3: Cloud Automation & AI Security Services
 https://www.one-tab.com/page/lnIC3nzKT06HJ3N0UCbQsA
