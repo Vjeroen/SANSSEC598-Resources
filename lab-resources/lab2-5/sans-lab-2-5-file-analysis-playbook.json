@@ -30,7 +30,7 @@
         "pages_action_color": "#777FFF",
         "pages_appearance_mode": "light",
         "pages_background_color": "#F9F9F9",
-        "url_identifier": "c17b11aa035b5b1ca67f47665783a89f",
+        "url_identifier": "a25955a021165f1d75c37b0fbd962a86",
         "loading_message": "Please, we are processing your file! "
       },
       "reporting": {
@@ -715,7 +715,7 @@
         "pages_action_color": "#000fe2",
         "pages_appearance_mode": "light",
         "pages_background_color": "#F9F9F9",
-        "url_identifier": "ba26d152af406414851e50f6d4da362e"
+        "url_identifier": "865fe87ced299c4774ed03e7ac5d3acb"
       },
       "reporting": {
         "time_saved_value": 0,
@@ -900,7 +900,7 @@
         "mode": "automatic",
         "input": "=implode_results_ips",
         "guidance": "Provide a path to a an array of map marker objects. Each object should have a latitude and longitude, and can have an optional label also., they are in the body value. \n\nWe need to have the label create based on ip adress, city and country code. ",
-        "language": "Python",
+        "language": "python_3_13",
         "script": "def main(input):\n    markers = []\n    for item in input:\n        marker = {\n            \"latitude\": item[\"body\"][\"latitude\"],\n            \"longitude\": item[\"body\"][\"longitude\"],\n            \"label\": f\"{item['body']['ip']} - {item['body']['city']}, {item['body']['country_code']}\"\n        }\n        markers.append(marker)\n    return markers"
       },
       "reporting": {
@@ -944,7 +944,7 @@
         "pages_action_color": "#000fe2",
         "pages_appearance_mode": "light",
         "pages_background_color": "#4d00bb",
-        "url_identifier": "811e6cd1a47e78aeaf7bb57dee769a31"
+        "url_identifier": "6736b87a7a42538e11a2183f35868d87"
       },
       "reporting": {
         "time_saved_value": 0,
@@ -2715,6 +2715,6 @@
   "integration_vendor": null,
   "llm_product_instructions": "",
   "send_to_stories": [],
-  "exported_at": "2026-01-26T19:05:56Z",
+  "exported_at": "2026-01-26T19:11:54Z",
   "icon": ":chart_with_upwards_trend:"
 }
