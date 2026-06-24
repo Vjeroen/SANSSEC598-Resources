@@ -240,7 +240,7 @@
                                                 },
                                                 "method": "patch",
                                                 "body": {
-                                                    "state": "Opem"
+                                                    "state": "Open"
                                                 },
                                                 "path": "/repos/@{encodeURIComponent('Vjeroen')}/@{encodeURIComponent('jeroenvdlsecops')}/issues/@{encodeURIComponent(body('Get_a_particular_issue_of_a_repository')?['number'])}"
                                             }
