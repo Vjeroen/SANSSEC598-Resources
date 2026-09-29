@@ -7,8 +7,71 @@ privately and passed only through the child environment, never command arguments
 Control starts the same observed process without contacting the CRM application.
 #>
 [CmdletBinding()]
-param([string]$CrmUrl, [switch]$Control, [switch]$Cleanup)
+param([string]$CrmUrl, [switch]$Control, [switch]$Cleanup, [switch]$ConsoleInput)
 $ErrorActionPreference = 'Stop'
+function Resolve-CrmAdminUrl([string]$Value) {
+    $parsed = $null
+    if ([string]::IsNullOrWhiteSpace($Value) -or -not [Uri]::TryCreate($Value.Trim(), [UriKind]::Absolute, [ref]$parsed)) {
+        throw 'Paste the complete HTTPS CRM admin URL from Lab 3.1.'
+    }
+    if ($parsed.Scheme -ne 'https' -or -not $parsed.DnsSafeHost.EndsWith('.azurewebsites.net') -or $parsed.AbsolutePath.TrimEnd('/') -cne '/crm/admin' -or $parsed.Query -or $parsed.Fragment -or $parsed.UserInfo -or $parsed.Port -ne 443) {
+        throw 'Use your deployed HTTPS URL ending in /crm/admin, without /api, query parameters or a key in the URL.'
+    }
+    return $parsed.GetLeftPart([UriPartial]::Authority) + '/crm/admin'
+}
+function Read-CrmFunctionKey([string]$Url, [switch]$UseConsole) {
+    if ($UseConsole) {
+        $value = Read-Host 'Paste the assigned CRM Function key, then press Enter (hidden)' -AsSecureString
+        if ($value.Length -eq 0) { $value.Dispose(); throw 'The CRM Function key cannot be empty.' }
+        return $value
+    }
+    Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -AssemblyName System.Drawing
+    $form = New-Object System.Windows.Forms.Form
+    try {
+        $form.Text = 'Globex Automation - Lab 5.4 CRM activity'
+        $form.ClientSize = New-Object System.Drawing.Size(640, 220)
+        $form.StartPosition = 'CenterScreen'
+        $form.FormBorderStyle = 'FixedDialog'
+        $form.MaximizeBox = $false
+        $form.MinimizeBox = $false
+        $form.TopMost = $true
+        $label = New-Object System.Windows.Forms.Label
+        $label.Location = New-Object System.Drawing.Point(16, 16)
+        $label.Size = New-Object System.Drawing.Size(608, 64)
+        $label.Text = "CRM endpoint: $Url`r`n`r`nPaste the CRM Function key below (Ctrl+V). It will remain masked."
+        $box = New-Object System.Windows.Forms.TextBox
+        $box.Location = New-Object System.Drawing.Point(16, 90)
+        $box.Size = New-Object System.Drawing.Size(608, 25)
+        $box.UseSystemPasswordChar = $true
+        $box.ShortcutsEnabled = $true
+        $hint = New-Object System.Windows.Forms.Label
+        $hint.Location = New-Object System.Drawing.Point(16, 125)
+        $hint.Size = New-Object System.Drawing.Size(608, 28)
+        $hint.Text = 'Start sends five lab requests. Expected result: HTTP 403 with telemetry accepted.'
+        $start = New-Object System.Windows.Forms.Button
+        $start.Text = 'Start requests'
+        $start.Location = New-Object System.Drawing.Point(390, 170)
+        $start.Size = New-Object System.Drawing.Size(120, 30)
+        $start.Enabled = $false
+        $start.DialogResult = [System.Windows.Forms.DialogResult]::OK
+        $cancel = New-Object System.Windows.Forms.Button
+        $cancel.Text = 'Cancel'
+        $cancel.Location = New-Object System.Drawing.Point(520, 170)
+        $cancel.Size = New-Object System.Drawing.Size(104, 30)
+        $cancel.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+        $box.Add_TextChanged({ $start.Enabled = -not [string]::IsNullOrWhiteSpace($box.Text) })
+        $form.Controls.AddRange(@($label, $box, $hint, $start, $cancel))
+        $form.AcceptButton = $start
+        $form.CancelButton = $cancel
+        $form.Add_Shown({ $box.Focus() })
+        if ($form.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) { throw 'CRM activity cancelled. No requests were sent.' }
+        return ConvertTo-SecureString -String $box.Text.Trim() -AsPlainText -Force
+    } finally {
+        if ($box) { $box.Clear() }
+        $form.Dispose()
+    }
+}
 $Root = [IO.Path]::GetFullPath('C:\GlobexLab\lab54-marker')
 foreach ($PathToCheck in @('C:\GlobexLab', $Root)) {
     if ((Test-Path -LiteralPath $PathToCheck) -and ((Get-Item -LiteralPath $PathToCheck).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
@@ -51,10 +114,8 @@ if ($Cleanup) {
 if (-not (Get-NetIPAddress -AddressFamily IPv4 | Where-Object IPAddress -eq '192.168.10.10')) { throw 'Run only on assigned Windows01 at 192.168.10.10.' }
 if ($Control -and $CrmUrl) { throw 'Control does not take a CRM URL.' }
 if (-not $Control) {
-    $uri = [Uri]$CrmUrl
-    if ($uri.Scheme -ne 'https' -or -not $uri.DnsSafeHost.EndsWith('.azurewebsites.net') -or $uri.AbsolutePath -ne '/api/crm/admin' -or $uri.Query -or $uri.Fragment -or $uri.UserInfo -or $uri.Port -ne 443) {
-        throw 'Use your deployed HTTPS CRM URL ending in /api/crm/admin.'
-    }
+    if ([string]::IsNullOrWhiteSpace($CrmUrl)) { $CrmUrl = Read-Host 'Paste the CRM admin URL from Lab 3.1 (ends in /crm/admin)' }
+    $CrmUrl = Resolve-CrmAdminUrl $CrmUrl
 }
 New-Item -ItemType Directory -Path $Root -Force | Out-Null
 $owned = @{ RequestIds = @(); ProcessId = $null; StartTimeUtc = $null }
@@ -123,7 +184,7 @@ try {
     $env:LAB54_CONTROL = if ($Control) {'1'} else {'0'}
     $env:LAB54_CRM_URL = $CrmUrl
     if (-not $Control) {
-        $secure = Read-Host 'Paste the assigned CRM Function key (hidden)' -AsSecureString
+        $secure = Read-CrmFunctionKey -Url $CrmUrl -UseConsole:$ConsoleInput
         $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
         try { $env:LAB54_CRM_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer) }
         finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer); $secure.Dispose() }
