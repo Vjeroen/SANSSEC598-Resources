@@ -7,8 +7,71 @@ privately and passed only through the child environment, never command arguments
 Control starts the same observed process without contacting the CRM application.
 #>
 [CmdletBinding()]
-param([string]$CrmUrl, [switch]$Control, [switch]$Cleanup)
+param([string]$CrmUrl, [switch]$Control, [switch]$Cleanup, [switch]$ConsoleInput)
 $ErrorActionPreference = 'Stop'
+function Resolve-CrmAdminUrl([string]$Value) {
+    $parsed = $null
+    if ([string]::IsNullOrWhiteSpace($Value) -or -not [Uri]::TryCreate($Value.Trim(), [UriKind]::Absolute, [ref]$parsed)) {
+        throw 'Paste the complete HTTPS CRM admin URL from Lab 3.1.'
+    }
+    if ($parsed.Scheme -ne 'https' -or -not $parsed.DnsSafeHost.EndsWith('.azurewebsites.net') -or $parsed.AbsolutePath.TrimEnd('/') -cne '/crm/admin' -or $parsed.Query -or $parsed.Fragment -or $parsed.UserInfo -or $parsed.Port -ne 443) {
+        throw 'Use your deployed HTTPS URL ending in /crm/admin, without /api, query parameters or a key in the URL.'
+    }
+    return $parsed.GetLeftPart([UriPartial]::Authority) + '/crm/admin'
+}
+function Read-CrmFunctionKey([string]$Url, [switch]$UseConsole) {
+    if ($UseConsole) {
+        $value = Read-Host 'Paste the assigned CRM Function key, then press Enter (hidden)' -AsSecureString
+        if ($value.Length -eq 0) { $value.Dispose(); throw 'The CRM Function key cannot be empty.' }
+        return $value
+    }
+    Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -AssemblyName System.Drawing
+    $form = New-Object System.Windows.Forms.Form
+    try {
+        $form.Text = 'Globex Automation - Lab 5.4 CRM activity'
+        $form.ClientSize = New-Object System.Drawing.Size(640, 220)
+        $form.StartPosition = 'CenterScreen'
+        $form.FormBorderStyle = 'FixedDialog'
+        $form.MaximizeBox = $false
+        $form.MinimizeBox = $false
+        $form.TopMost = $true
+        $label = New-Object System.Windows.Forms.Label
+        $label.Location = New-Object System.Drawing.Point(16, 16)
+        $label.Size = New-Object System.Drawing.Size(608, 64)
+        $label.Text = "CRM endpoint: $Url`r`n`r`nPaste the CRM Function key below (Ctrl+V). It will remain masked."
+        $box = New-Object System.Windows.Forms.TextBox
+        $box.Location = New-Object System.Drawing.Point(16, 90)
+        $box.Size = New-Object System.Drawing.Size(608, 25)
+        $box.UseSystemPasswordChar = $true
+        $box.ShortcutsEnabled = $true
+        $hint = New-Object System.Windows.Forms.Label
+        $hint.Location = New-Object System.Drawing.Point(16, 125)
+        $hint.Size = New-Object System.Drawing.Size(608, 28)
+        $hint.Text = 'Start sends five lab requests. Expected result: HTTP 403 with telemetry accepted.'
+        $start = New-Object System.Windows.Forms.Button
+        $start.Text = 'Start requests'
+        $start.Location = New-Object System.Drawing.Point(390, 170)
+        $start.Size = New-Object System.Drawing.Size(120, 30)
+        $start.Enabled = $false
+        $start.DialogResult = [System.Windows.Forms.DialogResult]::OK
+        $cancel = New-Object System.Windows.Forms.Button
+        $cancel.Text = 'Cancel'
+        $cancel.Location = New-Object System.Drawing.Point(520, 170)
+        $cancel.Size = New-Object System.Drawing.Size(104, 30)
+        $cancel.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+        $box.Add_TextChanged({ $start.Enabled = -not [string]::IsNullOrWhiteSpace($box.Text) })
+        $form.Controls.AddRange(@($label, $box, $hint, $start, $cancel))
+        $form.AcceptButton = $start
+        $form.CancelButton = $cancel
+        $form.Add_Shown({ $box.Focus() })
+        if ($form.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) { throw 'CRM activity cancelled. No requests were sent.' }
+        return ConvertTo-SecureString -String $box.Text.Trim() -AsPlainText -Force
+    } finally {
+        if ($box) { $box.Clear() }
+        $form.Dispose()
+    }
+}
 $Root = [IO.Path]::GetFullPath('C:\GlobexLab\lab54-marker')
 foreach ($PathToCheck in @('C:\GlobexLab', $Root)) {
     if ((Test-Path -LiteralPath $PathToCheck) -and ((Get-Item -LiteralPath $PathToCheck).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
@@ -51,10 +114,8 @@ if ($Cleanup) {
 if (-not (Get-NetIPAddress -AddressFamily IPv4 | Where-Object IPAddress -eq '192.168.10.10')) { throw 'Run only on assigned Windows01 at 192.168.10.10.' }
 if ($Control -and $CrmUrl) { throw 'Control does not take a CRM URL.' }
 if (-not $Control) {
-    $uri = [Uri]$CrmUrl
-    if ($uri.Scheme -ne 'https' -or -not $uri.DnsSafeHost.EndsWith('.azurewebsites.net') -or $uri.AbsolutePath -ne '/api/crm/admin' -or $uri.Query -or $uri.Fragment -or $uri.UserInfo -or $uri.Port -ne 443) {
-        throw 'Use your deployed HTTPS CRM URL ending in /api/crm/admin.'
-    }
+    if ([string]::IsNullOrWhiteSpace($CrmUrl)) { $CrmUrl = Read-Host 'Paste the CRM admin URL from Lab 3.1 (ends in /crm/admin)' }
+    $CrmUrl = Resolve-CrmAdminUrl $CrmUrl
 }
 New-Item -ItemType Directory -Path $Root -Force | Out-Null
 $owned = @{ RequestIds = @(); ProcessId = $null; StartTimeUtc = $null }
@@ -78,33 +139,77 @@ $IsControl = $env:LAB54_CONTROL -eq '1'
 Remove-Item Env:LAB54_CRM_KEY -ErrorAction SilentlyContinue
 $Receipt = Join-Path 'C:\GlobexLab\lab54-marker' ('lab54-crm-' + $CrmRequestId.ToString() + '.json')
 $Result = @{ status='running'; request_id=$CrmRequestId.ToString(); hostname=$env:COMPUTERNAME; user=[Security.Principal.WindowsIdentity]::GetCurrent().Name; control=$IsControl; events=@() }
+$FailureCode = 'worker_setup'
+$FailureReason = 'The CRM worker could not initialize.'
+$AttemptNumber = 0
 try {
     if ($IsControl) {
         Start-Sleep -Seconds 3
         $Result.status = 'control_complete'
     } else {
-        if (-not $Key -or -not $Url) { throw 'Missing private CRM configuration.' }
+        $FailureCode = 'missing_configuration'
+        $FailureReason = 'The worker did not receive the CRM URL or function key.'
+        if (-not $Key -or -not $Url) { throw $FailureReason }
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         $started = Get-Date
         for ($attempt=0; $attempt -lt 5; $attempt++) {
+            $AttemptNumber = $attempt + 1
+            $Result.last_http_status = $null
+            $FailureCode = 'request_failed'
+            $FailureReason = 'The CRM request failed before a response was received.'
             if ($attempt -gt 0) { Start-Sleep -Milliseconds 1100 }
             $EventId = if ($attempt -eq 0) { $CrmRequestId.ToString() } else { [Guid]::NewGuid().ToString() }
             $Body = @{event_id=$EventId} | ConvertTo-Json -Compress
             try {
                 $response = Invoke-WebRequest -Uri $Url -Method Post -Headers @{'x-functions-key'=$Key} -ContentType 'application/json' -Body $Body -UseBasicParsing -TimeoutSec 10
-                throw 'Expected denied CRM access, but received a successful HTTP response.'
+                $Result.last_http_status = [int]$response.StatusCode
+                $FailureCode = 'unexpected_success'
+                $FailureReason = 'Expected HTTP 403 from the CRM admin route, but received a successful response.'
+                throw $FailureReason
             } catch [System.Net.WebException] {
+                $webFailure = $_
                 $response = $_.Exception.Response
-                if (-not $response -or [int]$response.StatusCode -ne 403) { throw 'CRM did not return expected HTTP 403; inspect access and the endpoint.' }
-                $reader = New-Object IO.StreamReader($response.GetResponseStream())
-                try { $data = $reader.ReadToEnd() | ConvertFrom-Json } finally { $reader.Dispose(); $response.Close() }
+                if (-not $response) {
+                    $FailureCode = 'network_or_timeout'
+                    $FailureReason = 'No HTTP response arrived. Check connectivity, TLS, DNS and the 10-second request timeout.'
+                    throw $FailureReason
+                }
+                $Result.last_http_status = [int]$response.StatusCode
+                if ($Result.last_http_status -ne 403) {
+                    $FailureCode = 'unexpected_http_status'
+                    $FailureReason = 'CRM returned an unexpected HTTP status; inspect the CRM endpoint.'
+                    if ($Result.last_http_status -eq 401) { $FailureReason = 'CRM authentication failed. Use the CRM function key, not the LimaCharlie receiver key.' }
+                    if ($Result.last_http_status -eq 404) { $FailureReason = 'CRM route was not found. Use the deployed /crm/admin URL.' }
+                    if ($Result.last_http_status -eq 503) { $FailureReason = 'CRM returned HTTP 503. Check Lab 3.1 CRM telemetry ingestion and Function availability.' }
+                    $response.Close()
+                    throw $FailureReason
+                }
+                $FailureCode = 'invalid_crm_response'
+                $FailureReason = 'CRM returned HTTP 403, but its response was not a readable telemetry JSON object.'
+                # Windows PowerShell may already have consumed the error stream.
+                # Its ErrorDetails then holds the body. Never log the raw body.
+                $responseBody = $webFailure.ErrorDetails.Message
+                try {
+                    if ([string]::IsNullOrWhiteSpace($responseBody)) {
+                        $reader = New-Object IO.StreamReader($response.GetResponseStream())
+                        try { $responseBody = $reader.ReadToEnd() } finally { $reader.Dispose() }
+                    }
+                    $data = $responseBody | ConvertFrom-Json -ErrorAction Stop
+                    if (-not $data) { throw $FailureReason }
+                } finally { $response.Close() }
             }
+            $FailureCode = 'telemetry_mismatch'
+            $FailureReason = 'CRM response did not confirm accepted AdminAccessDenied telemetry for this request ID.'
             $raw = $data.row.RawMessage | ConvertFrom-Json
             if (-not $data.telemetry_accepted -or $raw.event_id -ne $EventId -or $data.row.Operation -ne 'AdminAccessDenied' -or $raw.source_ip_emulated -ne $true) { throw 'CRM telemetry did not match the actual request.' }
             $Result.events += @{event_id=$EventId; http_status=403; row=$data.row}
             Write-Host ('CRM request {0}/5: HTTP 403; telemetry accepted; request {1}' -f ($attempt+1),$EventId)
-            if (((Get-Date)-$started).TotalSeconds -gt 60) { throw 'Burst exceeded 60 seconds. Preserve partial evidence.' }
+            $FailureCode = 'burst_timeout'
+            $FailureReason = 'CRM burst exceeded 60 seconds. Partial accepted events were preserved.'
+            if (((Get-Date)-$started).TotalSeconds -gt 60) { throw $FailureReason }
         }
+        $FailureCode = 'event_time_window'
+        $FailureReason = 'Accepted event timestamps were invalid or exceeded the 60-second detection window.'
         $times = @($Result.events | ForEach-Object { [DateTimeOffset]::Parse($_.row.TimeGenerated) } | Sort-Object)
         if (($times[-1]-$times[0]).TotalSeconds -gt 60) { throw 'Accepted event timestamps exceed the detection window.' }
         $Result.status='complete'
@@ -112,7 +217,8 @@ try {
     }
 } catch {
     $Result.status='failed'
-    Write-Error 'CRM worker failed. Inspect the saved partial receipt; no success is implied.' -ErrorAction Continue
+    $Result.failure = @{ code=$FailureCode; message=$FailureReason; attempt=$AttemptNumber; exception_type=$_.Exception.GetType().FullName }
+    Write-Error ('CRM worker failed: ' + $FailureReason) -ErrorAction Continue
 } finally {
     $Key=$null
     $Result | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $Receipt -Encoding UTF8
@@ -123,7 +229,7 @@ try {
     $env:LAB54_CONTROL = if ($Control) {'1'} else {'0'}
     $env:LAB54_CRM_URL = $CrmUrl
     if (-not $Control) {
-        $secure = Read-Host 'Paste the assigned CRM Function key (hidden)' -AsSecureString
+        $secure = Read-CrmFunctionKey -Url $CrmUrl -UseConsole:$ConsoleInput
         $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
         try { $env:LAB54_CRM_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer) }
         finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer); $secure.Dispose() }
@@ -140,6 +246,10 @@ if (-not $process.WaitForExit(70000)) { $process.Kill(); throw 'Owned worker exc
 $Receipt = Join-Path $Root ('lab54-crm-'+$RequestId+'.json')
 Assert-OwnedFile $Receipt
 $result = Get-Content -LiteralPath $Receipt -Raw | ConvertFrom-Json
-if ($result.status -notin @('complete','control_complete')) { throw ('CRM worker failed. Receipt: '+$Receipt) }
+if ($result.status -notin @('complete','control_complete')) {
+    Write-Host ('CRM failure: {0}; HTTP status: {1}; accepted events: {2}' -f $result.failure.code, $result.last_http_status, @($result.events).Count)
+    Write-Host $result.failure.message
+    throw ('CRM worker failed. Receipt: '+$Receipt)
+}
 Write-Host ('Result: '+$result.status+'; receipt: '+$Receipt)
 Write-Host 'Compare this request ID with the LimaCharlie detection and CRM Sentinel alert. CRM source IP remains an emulated Lab 3.1 indicator.'
